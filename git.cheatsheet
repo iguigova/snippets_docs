@@ -1,0 +1,18 @@
+
+git push {remote} {local branch}:{remote branch}
+git push origin master:master
+git config remote.origin.push mybranch:remotebranch
+
+git remote show origin
+git remote add unfundle me@unfundle.com/myrepo.git
+git push unfundle
+
+git ls-files
+
+// dalibornasevic.com/posts/2-permanently-remove-files-and-folders-from-a-git-repository
+git filter-branch -t --tree-filter 'rm filename' HEAD
+git push origin <branch> --force
+
+// undo file changes
+git checkout --filename
+git checkout <version> --filename  <- {sha reference, 

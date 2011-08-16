@@ -1,0 +1,30 @@
+
+--color[=WHEN] WHEN: always, never, auto
+-c count of matches in a file
+-r recursive
+-e PATTERN
+-i ignore case
+-L list of files without matches
+-l list of files with matches
+-n include line number
+--inlcude=PATTERN filter to files matching this pattern
+--exclude=PATTERN filter to files not matching this pattern
+-s suppress error messages
+-v invert matching (i.e. show lines that do not match)
+-w whole word matching
+-x whole line matching
+-I ignore binary data
+-C NUM print  NUM lines of output context.
+
+grep [options] -e PATTERN [FILE..]
+
+grep -wrc -e optional *.js  -- return count of matches in each file
+grep -wrl -e optional *.js  -- return files matching
+grep -wrv -e optional *.js  -- return files not matching
+
+grep "string" FILENAME      -- Search for the given string in a single file
+grep "string" FILE_PATTERN  -- Search for the given string in multiple files
+grep -A <N> "string" FILENAME -- Display N lines after match
+
+
+grep -iIrn --exclude-dir="*\.svn*" --include="*\.js" "optional" .

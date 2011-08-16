@@ -1,0 +1,150 @@
+
+MOVEMENT
+        C-f             Move forward a character
+        C-b             Move backward a character
+
+        M-f             Move forward a word
+        M-b             Move backward a word
+
+        C-n             Move to next line
+        C-p             Move to previous line
+
+        C-a             Move to beginning of line
+        C-e             Move to end of line
+
+        M-a             Move back to beginning of sentence
+        M-e             Move forward to end of sentence
+
+        M-<             Move to the beginning of the file
+        M->             Move to the end of the file
+        C-M-v           Scroll the bottom window
+
+NAVIGATION
+        C-g             Cancel command
+        ESC ESC ESC     Escape
+
+        C-u NUM         Repeat
+        C-_             Undo
+        C-x C-c         Exit (with prompt for saving outstanding changes)
+
+        C-x z           Repeat last command without prompt
+        C-x ESC ESC     Repeat last command with prompt
+
+        C-s             Search forward
+        C-r             Search backwards
+        C-M-s           Regular expression incremental search
+        M-%             Query replace
+        M-x occur
+        M-x re-builder
+
+        M-g g           Jump to specified line
+        C-SPC           Set mark to current location
+        C-x C-x         Swap point and mark
+
+        C-x h           Select all
+        M-h             Select paragraph
+
+        C-x n n         Narrow buffer
+        C-x n w         Widen buffer
+
+C-z is the command to exit Emacs *temporarily*--so that you can go
+back to the same Emacs session afterward.  When Emacs is running on a
+text terminal, C-z "suspends" Emacs; that is, it returns to the shell
+but does not destroy the Emacs.  In the most common shells, you can
+resume Emacs with the `fg' command or with `%emacs'.
+
+To get out of the recursive editing level, type <ESC> <ESC> <ESC>.
+That is an all-purpose "get out" command.  You can also use it for
+eliminating extra windows, and getting out of the minibuffer.
+
+INSERTING AND DELETING
+
+        <Delback>       Delete the character just before the cursor
+        C-d             Delete the next character after the cursor
+
+        M-<Delback>     Kill the word immediately before the cursor
+        M-d             Kill the next word after the cursor
+
+        C-k             Kill from the cursor position to end of line
+        M-k             Kill to the end of the current sentence
+
+        C-w             Kill region
+        M-w             Copy region
+
+        C-y             Yank/Paste
+        M-y             Yank/Paste previous
+
+You can also kill any part of the text with one uniform method.  Move
+to one end of that part, and type C-@ or C-<SPC> (either one).  (<SPC>
+is the Space bar.)  Move to the other end of that part, and type C-w.
+That kills all the text between the two positions.
+
+If you do several C-k's in a row, all of the killed text is saved
+together, so that one C-y will yank all of the lines at once.
+
+EDITING
+        C-M-\           Indent region
+        M-u             Uppercase word
+        M-;             Comment
+        M-x (un)tabify
+
+BUFFERS
+        C-x b           Switch buffer
+        C-x 4 b         Switch buffer in another window
+        C-x C-b         List buffers
+        C-x s           Save some buffers
+
+        C-x 0           Delete window
+        C-x 4 0         Delete window and buffer
+        C-x 1           Delete other windows
+        C-x 2           Split window vertically
+        C-x 3           Split window horizontally
+        C-x +           Balance windows
+        C-x o           Other window
+
+        M-p/n           Minibuffer history
+        g               Refresh
+
+See how each buffer has a name, and it may also have a file name for
+the file whose contents it holds. ANY text you see in an Emacs window
+is always part of some buffer.
+
+FILES
+        C-x C-f         Find a file
+        C-x 4 C-f       Find a file in another window
+        C-x C-s         Save the file
+        C-x C-w         Write file
+
+        M-x ediff       Compare files
+
+VERSION CONTROL
+        C-x v =         Display a diff showing the changes to the current file
+        C-x v ~         Shows a version of the current file
+        C-x v g         Blame
+        C-x v l         Log
+
+REGULAR EXP
+Replacement string
+        \&              The original found text
+        \1, \2          The 1st, 2nd parenthesized subgroup in the found text
+        \#              The number of replacements done so far
+        \?              A string obtaind by prompting the user on each match
+        \, (lisp-expression)
+
+M-x replace-regexp -> \(\w+\)\(\w+) -> \, (upcase \2), \1
+George Washington -> WASHINGTON, George
+
+MISC
+        M-x shell
+        C-u M-x shell
+
+        M-x dired
+            C           Copy file
+            R           Rename file
+
+        M-x eval-expression
+        M-x set-variable
+
+        M-x grep
+        M-x man
+        M-x calculator
