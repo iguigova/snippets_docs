@@ -1,4 +1,3 @@
-
 MOVEMENT
         C-f             Move forward a character
         C-b             Move backward a character
@@ -122,6 +121,14 @@ VERSION CONTROL
         C-x v ~         Shows a version of the current file
         C-x v g         Blame
         C-x v l         Log
+
+MACROS
+        C-x (           Start recording key sequence
+        C-x )           Stop recording key sequence
+        C-x e           Execute last-defined keyboard macro
+        M-x name-last-kbd-macro Name the last-defined keyboard macro
+        M-x my-macro            Execute the named keyboard macro
+        M-x insert-kbd-macro    Insert a named keyboard macro into your initialization file.
 
 REGULAR EXP
 Replacement string
