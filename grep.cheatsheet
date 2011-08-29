@@ -22,9 +22,13 @@ grep -wrc -e optional *.js  -- return count of matches in each file
 grep -wrl -e optional *.js  -- return files matching
 grep -wrv -e optional *.js  -- return files not matching
 
-grep "string" FILENAME      -- Search for the given string in a single file
-grep "string" FILE_PATTERN  -- Search for the given string in multiple files
+grep "string" FILE_PATTERN  -- Search for the given string in files
 grep -A <N> "string" FILENAME -- Display N lines after match
 
 
 grep -iIrn --exclude-dir="*\.svn*" --include="*\.js" "optional" .
+
+REFERENCES
+ 
+http://unixhelp.ed.ac.uk/CGI/man-cgi?grep
+http://www.thegeekstuff.com/2009/03/15-practical-unix-grep-command-examples/
