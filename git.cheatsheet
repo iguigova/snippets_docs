@@ -1,21 +1,27 @@
 
-git push {remote} {local branch}:{remote branch}
-git push origin master:master
-git config remote.origin.push mybranch:remotebranch
-
-git remote show origin
-git remote add unfundle me@unfundle.com/myrepo.git
-git push unfundle
-
+LIST files in the index
 git ls-files
+
+UNDO file changes
+git checkout --filename
+git checkout <version> --filename  <- {sha reference, 
+
+REMOVE files from the index: http://www.kernel.org/pub/software/scm/git/docs/git-rm.html
+git rm -n -r FILE_PATTERN
 
 // dalibornasevic.com/posts/2-permanently-remove-files-and-folders-from-a-git-repository
 git filter-branch -t --tree-filter 'rm filename' HEAD
 git push origin <branch> --force
 
-// undo file changes
-git checkout --filename
-git checkout <version> --filename  <- {sha reference, 
+REMOTE repository
+git remote show origin
+git remote add unfundle me@unfundle.com/myrepo.git
+git push unfundle
+
+git push {remote} {local branch}:{remote branch}
+git push origin master:master
+git config remote.origin.push mybranch:remotebranch
+
 
 REFERENCES
 
@@ -30,3 +36,5 @@ http://toroid.org/ams/git-website-howto
 
 GitHub Git cheatsheet
 http://help.github.com/git-cheat-sheets/
+
+http://www.kernel.org/pub/software/scm/git/docs/everyday.html
