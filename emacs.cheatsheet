@@ -30,6 +30,7 @@ NAVIGATION
         C-x ESC ESC     Repeat last command with prompt
 
         C-s             Search forward
+        C-s C-s         Search for last searched item
         C-r             Search backwards
         C-M-s           Regular expression incremental search
         M-%             Query replace
@@ -37,6 +38,7 @@ NAVIGATION
         M-x re-builder
 
         M-g g           Jump to specified line
+        C-l             Re-center
         C-SPC           Set mark to current location
         C-x C-x         Swap point and mark
 
@@ -146,8 +148,13 @@ MISC
         C-u M-x shell
 
         M-x dired
+        M-x find-named-dired
             C           Copy file
             R           Rename file
+            i           Show subfolder
+            ^           Go to parent
+            g           Refresh
+            o           Open in another window
 
         M-x eval-expression
         M-x set-variable
