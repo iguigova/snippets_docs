@@ -75,6 +75,8 @@ INSERTING AND DELETING
         C-y             Yank/Paste
         M-y             Yank/Paste previous
 
+        C-x C-o         Delete all but one of many consecutive blank lines
+
 You can also kill any part of the text with one uniform method.  Move
 to one end of that part, and type C-@ or C-<SPC> (either one).  (<SPC>
 is the Space bar.)  Move to the other end of that part, and type C-w.
@@ -158,6 +160,9 @@ MISC
 
         M-x eval-expression
         M-x set-variable
+
+        M-x count-lines-region, M-=
+        C-x l           Counts the lines in the current page
 
         M-x grep
         M-x man
