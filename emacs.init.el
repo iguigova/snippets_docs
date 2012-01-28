@@ -1,4 +1,3 @@
-
 ;VARIABLES
 
  (setq inhibit-startup-message t)                ; No message at startup
@@ -88,6 +87,14 @@
 
 ; http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
 ;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
+
+;http://xahlee.org/emacs/emacs_installing_packages.html
+;http://www.haskell.org/haskellwiki/Haskell_mode_for_Emacs
+;http://lists.gnu.org/archive/html/help-gnu-emacs/2008-06/msg00663.html
+(add-to-list 'load-path "c:/Program Files/emacs-23.3/lisp/othermodes/haskell-mode-2.8.0")
+(load "haskell-site-file")
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 ;http://xahlee.org/emacs/emacs_html.html : Colored color values in css and html
  (defvar hexcolour-keywords
