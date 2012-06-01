@@ -145,6 +145,13 @@ Replacement string
 M-x replace-regexp -> \(\w+\)\(\w+) -> \, (upcase \2), \1
 George Washington -> WASHINGTON, George
 
+HTML
+        C-c C-f         Skip across a balanced tag group
+        C-c C-b         Skip backwords across a balanced tag group
+        C-c C-d         Insert a close tag for the innermost unterminated tag
+        C-c C-v         Run a shell command to validate the current buffer
+        C-c TAB         Toggle the visibility of existing tags in the buffer
+
 MISC
         M-x shell
         C-u M-x shell
@@ -172,6 +179,7 @@ REFERENCES
 
 GNU Emacs manual 
 http://www.gnu.org/software/emacs/manual/emacs.html
+http://www.gnu.org/software/emacs/manual/html_mono/emacs.html
 
 A Guided Tour of Emacs 
 http://www.gnu.org/software/emacs/tour/
