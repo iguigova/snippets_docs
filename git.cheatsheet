@@ -17,11 +17,15 @@ git remote show origin
 git remote add unfundle me@unfundle.com/myrepo.git
 git push unfundle
 
-git push {remote} {local branch}:{remote branch}
+git push <remote> <local branch>:<remote branch>
 git push origin master:master
 git config remote.origin.push mybranch:remotebranch
 
 git remote set-url example git://github.com/user/test.git will set the URL of the remote named “example”
+
+CREATE FROM REMOTE
+git clone <url>
+git checkout --track -b <branchname> <remote>/<branch>
 
 REFERENCES
 
@@ -41,3 +45,4 @@ GitHub Git cheatsheet
 http://help.github.com/git-cheat-sheets/
 
 http://www.kernel.org/pub/software/scm/git/docs/everyday.html
+http://longair.net/blog/2009/04/16/git-fetch-and-merge/
