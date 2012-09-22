@@ -152,6 +152,8 @@ HTML
         C-c C-v         Run a shell command to validate the current buffer
         C-c TAB         Toggle the visibility of existing tags in the buffer
 
+EVALUATING EXPRESSIONS: http://www.emacswiki.org/emacs/EvaluatingExpressions
+
 MISC
         M-x shell
         C-u M-x shell
