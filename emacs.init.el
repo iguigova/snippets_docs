@@ -142,7 +142,7 @@ by using nxml's indentation rules."
  (defalias 'yes-or-no-p 'y-or-n-p)              ; y/n instead of yes/no
  (defalias 'qrr 'query-replace-regexp)          ; Define an alias
 
-
+ (global-set-key (kbd "<f5>") 'next-buffer)
  (global-set-key (kbd "<f6>") 'whitespace-mode)
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
  (global-set-key (kbd "<f8>") '(lambda () (interactive)(enlarge-window 5)))
