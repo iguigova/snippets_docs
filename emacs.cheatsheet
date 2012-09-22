@@ -95,6 +95,8 @@ BUFFERS
         C-x b           Switch buffer
         C-x 4 b         Switch buffer in another window
         C-x C-b         List buffers
+        C-x C-->        Next buffer
+        C-x C-<-        Previous buffer
         C-x s           Save some buffers
 
         C-x 0           Delete window
