@@ -24,6 +24,7 @@ NAVIGATION
 
         C-u NUM         Repeat
         C-_             Undo
+        C-x C-_         Undo in reversed direction
         C-x C-c         Exit (with prompt for saving outstanding changes)
 
         C-x z           Repeat last command without prompt
@@ -86,6 +87,8 @@ If you do several C-k's in a row, all of the killed text is saved
 together, so that one C-y will yank all of the lines at once.
 
 EDITING
+        M-/             Auto-completion
+        M-q             Format text
         C-M-\           Indent region
         M-u             Uppercase word
         M-;             Comment
