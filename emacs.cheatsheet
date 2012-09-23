@@ -165,9 +165,18 @@ http://www.gnu.org/software/emacs/manual/html_node/emacs/Tags.html
 
 http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html#id64146
 
-Tags is a standard Emacs package used to record information about source files in large development projects. In addition to listing the files of a project, a tags file normally contains information about all functions and variables that are defined. By far, the most useful command of the tags system is its ability to find the definition of functions in any file in the project. However the Tags system is not limited to this feature, for example, it is possible to do a text search in all files in a project, or to perform a project-wide search and replace.
+Tags is a standard Emacs package used to record information about source files in large 
+development projects. In addition to listing the files of a project, a tags file normally 
+contains information about all functions and variables that are defined. By far, the most 
+useful command of the tags system is its ability to find the definition of functions in any 
+file in the project. However the Tags system is not limited to this feature, for example, 
+it is possible to do a text search in all files in a project, or to perform a project-wide 
+search and replace.
 
-In order to use the Tags system a file named TAGS must be created. The file can be seen as a database over all functions, records, and macros in all files in the project. The TAGS file can be created using two different methods for Erlang. The first is the standard Emacs utility "etags", the second is by using the Erlang module tags.
+In order to use the Tags system a file named TAGS must be created. The file can be seen 
+as a database over all functions, records, and macros in all files in the project. 
+The TAGS file can be created using two different methods for Erlang. The first is the 
+standard Emacs utility "etags", the second is by using the Erlang module tags.
 
 MISC
         M-x shell
