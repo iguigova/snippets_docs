@@ -51,8 +51,8 @@
 
 ;MODES
  
- (menu-bar-mode nil)                             ; No menubar
- (tool-bar-mode nil)                             ; No toolbar
+ (menu-bar-mode 0)                               ; No menubar
+ (tool-bar-mode 0)                               ; No toolbar
  (icomplete-mode t)                              ; Completion in mini-buffer
  (global-linum-mode 1)                           ; Show line number on each row
  (line-number-mode 1)                            ; Show line number in mode-line
@@ -85,16 +85,22 @@
 
 ;MISCELLANEOUS
 
-; http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
-;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
+;http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
+ (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
 
 ;http://xahlee.org/emacs/emacs_installing_packages.html
 ;http://www.haskell.org/haskellwiki/Haskell_mode_for_Emacs
 ;http://lists.gnu.org/archive/html/help-gnu-emacs/2008-06/msg00663.html
-(add-to-list 'load-path "c:/Program Files/emacs-23.3/lisp/othermodes/haskell-mode-2.8.0")
-(load "haskell-site-file")
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+ (add-to-list 'load-path "c:/Program Files/emacs-23.3/lisp/othermodes/haskell-mode-2.8.0")
+ (load "haskell-site-file")
+ (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+ (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+
+;http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html
+ (setq load-path (cons "c:/Program Files (x86)/erl5.9.2/lib/tools-2.6.8/emacs" load-path))
+ (setq erlang-root-dir "c:/Program Files (x86)/erl5.9.2")
+ (setq exec-path (cons "c:/Program Files (x86)/erl5.9.2/bin" exec-path))
+ (require 'erlang-start)
 
 ;http://xahlee.org/emacs/emacs_html.html : Colored color values in css and html
  (defvar hexcolour-keywords
@@ -136,7 +142,7 @@ by using nxml's indentation rules."
  (defalias 'yes-or-no-p 'y-or-n-p)              ; y/n instead of yes/no
  (defalias 'qrr 'query-replace-regexp)          ; Define an alias
 
-
+ (global-set-key (kbd "<f5>") 'next-buffer)
  (global-set-key (kbd "<f6>") 'whitespace-mode)
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
  (global-set-key (kbd "<f8>") '(lambda () (interactive)(enlarge-window 5)))

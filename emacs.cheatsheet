@@ -24,6 +24,7 @@ NAVIGATION
 
         C-u NUM         Repeat
         C-_             Undo
+        C-x C-_         Undo in reversed direction
         C-x C-c         Exit (with prompt for saving outstanding changes)
 
         C-x z           Repeat last command without prompt
@@ -86,6 +87,8 @@ If you do several C-k's in a row, all of the killed text is saved
 together, so that one C-y will yank all of the lines at once.
 
 EDITING
+        M-/             Auto-completion
+        M-q             Format text
         C-M-\           Indent region
         C-x C-u         Uppercase region
         M-u             Uppercase word
@@ -97,6 +100,8 @@ BUFFERS
         C-x b           Switch buffer
         C-x 4 b         Switch buffer in another window
         C-x C-b         List buffers
+        C-x C-->        Next buffer
+        C-x C-<-        Previous buffer
         C-x s           Save some buffers
 
         C-x 0           Delete window
@@ -153,6 +158,27 @@ HTML
         C-c C-d         Insert a close tag for the innermost unterminated tag
         C-c C-v         Run a shell command to validate the current buffer
         C-c TAB         Toggle the visibility of existing tags in the buffer
+
+EVALUATING EXPRESSIONS
+http://www.emacswiki.org/emacs/EvaluatingExpressions
+
+TAGS TABLE
+http://www.gnu.org/software/emacs/manual/html_node/emacs/Tags.html
+
+http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html#id64146
+
+Tags is a standard Emacs package used to record information about source files in large 
+development projects. In addition to listing the files of a project, a tags file normally 
+contains information about all functions and variables that are defined. By far, the most 
+useful command of the tags system is its ability to find the definition of functions in any 
+file in the project. However the Tags system is not limited to this feature, for example, 
+it is possible to do a text search in all files in a project, or to perform a project-wide 
+search and replace.
+
+In order to use the Tags system a file named TAGS must be created. The file can be seen 
+as a database over all functions, records, and macros in all files in the project. 
+The TAGS file can be created using two different methods for Erlang. The first is the 
+standard Emacs utility "etags", the second is by using the Erlang module tags.
 
 MISC
         M-x shell
