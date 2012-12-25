@@ -87,7 +87,9 @@ together, so that one C-y will yank all of the lines at once.
 
 EDITING
         C-M-\           Indent region
+        C-x C-u         Uppercase region
         M-u             Uppercase word
+        M-c             Capitalize word
         M-;             Comment
         M-x (un)tabify
 
