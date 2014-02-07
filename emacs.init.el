@@ -115,6 +115,17 @@
  (add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
  (add-hook 'html-mode-hook 'hexcolour-add-to-font-lock)
 
+;http://stackoverflow.com/questions/251908/how-can-i-insert-current-date-and-time-into-a-file-using-emacs
+ (defun insert-time ()
+  "Insert string for the current time"
+  (interactive)                 ; permit invocation in minibuffer
+  (insert (format-time-string "%H:%M:%S %z")))
+
+ (defun insert-date ()
+  "Insert current date yyyy-mm-dd."
+  (interactive)                 ; permit invocation in minibuffer
+  (insert (format-time-string "%Y-%m-%d")))
+
 ;http://stackoverflow.com/questions/12492/pretty-printing-xml-files-on-emacs 
  (defun bf-pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
@@ -146,6 +157,9 @@ by using nxml's indentation rules."
  (global-set-key (kbd "<f6>") 'whitespace-mode)
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
  (global-set-key (kbd "<f8>") '(lambda () (interactive)(enlarge-window 5)))
+
+ (global-set-key "\C-c\C-d" 'insert-date)
+ (global-set-key "\C-c\C-t" 'insert-time)
 
 ;References
 ; http://homepages.inf.ed.ac.uk/s0243221/emacs/
