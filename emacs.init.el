@@ -25,8 +25,9 @@
 
  (setq scroll-step 1)                            ; Line-by-line scrolling
 
- (setq grep-command "grep -iIrn --exclude-dir=\"\\.svn\" --include=\"*\\.*\" -e \"PATTERN \" .")
- (setq find-program "\"C:/Program Files (x86)/GnuWin32/bin/find.exe\"")
+ (setq grep-command "grep -iIrne \"PATTERN\" .") ;"grep -iIrn --exclude-dir=\"\\.svn\" --include=\"*\\.*\" -e \"PATTERN \" .")
+; (setq find-grep-command "find -name \"*.js\" -not -path \"./directory/*\"")
+; (setq find-program "c:/Program Files (x86)/Git/bin/find.exe")
 
 ;(setq sentence-end-double-space nil)            ; Sentences end with one space   
 ;(setq mouse-yank-at-point t)                    ; Paste at cursor position
@@ -51,7 +52,7 @@
 
 ;MODES
  
- (menu-bar-mode 0)                               ; No menubar
+ (menu-bar-mode nil)                             ; No menubar
  (tool-bar-mode 0)                               ; No toolbar
  (icomplete-mode t)                              ; Completion in mini-buffer
  (global-linum-mode 1)                           ; Show line number on each row
@@ -91,16 +92,17 @@
 ;http://xahlee.org/emacs/emacs_installing_packages.html
 ;http://www.haskell.org/haskellwiki/Haskell_mode_for_Emacs
 ;http://lists.gnu.org/archive/html/help-gnu-emacs/2008-06/msg00663.html
- (add-to-list 'load-path "c:/Program Files/emacs-23.3/lisp/othermodes/haskell-mode-2.8.0")
- (load "haskell-site-file")
- (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
- (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+;(add-to-list 'load-path "c:/Program Files/emacs-23.3/lisp/othermodes/haskell-mode-2.8.0")
+;(load "haskell-site-file")
+;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 ;http://www.erlang.org/doc/apps/tools/erlang_mode_chapter.html
- (setq load-path (cons "c:/Program Files (x86)/erl5.9.2/lib/tools-2.6.8/emacs" load-path))
- (setq erlang-root-dir "c:/Program Files (x86)/erl5.9.2")
- (setq exec-path (cons "c:/Program Files (x86)/erl5.9.2/bin" exec-path))
- (require 'erlang-start)
+;c:\Program Files (x86)\erl5.9.2\lib\tools-2.6.8\emacs
+; (setq load-path (cons "c:/Program Files (x86)/erl5.9.2/lib/tools-2.6.8/emacs" load-path))
+; (setq erlang-root-dir "c:/Program Files (x86)/erl5.9.2")
+; (setq exec-path (cons "c:/Program Files (x86)/erl5.9.2/bin" exec-path))
+; (require 'erlang-start)
 
 ;http://xahlee.org/emacs/emacs_html.html : Colored color values in css and html
  (defvar hexcolour-keywords
@@ -114,6 +116,13 @@
    (font-lock-add-keywords nil hexcolour-keywords))
  (add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
  (add-hook 'html-mode-hook 'hexcolour-add-to-font-lock)
+
+;http://stackoverflow.com/questions/6532998/how-to-run-multiple-shells-on-emacs
+ (defun create-shell ()
+    "Creates a shell with a given name"
+    (interactive);; "Prompt\n shell name:")
+    (let ((shell-name (read-string "shell name: " nil)))
+    (shell (concat "*" shell-name "*"))))
 
 ;http://stackoverflow.com/questions/251908/how-can-i-insert-current-date-and-time-into-a-file-using-emacs
  (defun insert-time ()
@@ -148,16 +157,17 @@ by using nxml's indentation rules."
 ;http://www.gnu.org/software/emacs/windows/Installing-Emacs.html#Installing-Emacs
  (server-start)
 
-
  (defalias 'rof 'recentf-open-files)
  (defalias 'yes-or-no-p 'y-or-n-p)              ; y/n instead of yes/no
  (defalias 'qrr 'query-replace-regexp)          ; Define an alias
 
- (global-set-key (kbd "<f5>") 'next-buffer)
+ (global-set-key (kbd "<f5>") '(lambda () (interactive)(enlarge-window 5)))
  (global-set-key (kbd "<f6>") 'whitespace-mode)
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
- (global-set-key (kbd "<f8>") '(lambda () (interactive)(enlarge-window 5)))
+ (global-set-key (kbd "<f8>") 'next-buffer)
+ (global-set-key (kbd "<f9>") 'other-window)
 
+ (global-set-key "\C-c\C-s" 'create-shell)
  (global-set-key "\C-c\C-d" 'insert-date)
  (global-set-key "\C-c\C-t" 'insert-time)
 
@@ -171,3 +181,4 @@ by using nxml's indentation rules."
 ; http://www.emacswiki.org/emacs/TruncateLines
 ; http://www.emacswiki.org/emacs/McMahanEmacsConfiguration
 ; http://www.masteringemacs.org/articles/2011/02/08/mastering-key-bindings-emacs/
+(put 'upcase-region 'disabled nil)
