@@ -2,7 +2,7 @@
  (setq w32-use-full-screen-buffer nil)           ; http://everything2.com/title/Tips+for+using+GNU+Emacs+in+MS+Windows
 
  (setq inhibit-startup-message t)                ; No message at startup
- (setq frame-title-format "%b - emacs")          ; Use buffer name as frame title
+ (setq frame-title-format "%f (%i) - %b")        ; Use buffer name as frame title
  (setq initial-frame-alist '((top . 20) (left . 100) (width . 80) (height . 40)))
  (setq default-major-mode 'text-mode)            ; Text-mode is default mode
  (setq visible-bell t)                           ; No beep when reporting errors
