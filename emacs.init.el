@@ -1,4 +1,5 @@
 ;VARIABLES
+ (setq w32-use-full-screen-buffer nil)           ; http://everything2.com/title/Tips+for+using+GNU+Emacs+in+MS+Windows
 
  (setq inhibit-startup-message t)                ; No message at startup
  (setq frame-title-format "%b - emacs")          ; Use buffer name as frame title
@@ -19,6 +20,7 @@
  (setq tab-width 4)                              ; Length of tab is 4 SPC
  (setq indent-line-function 'insert-tab)
  (setq standard-indent 4)                        ; Set Indent Size
+ (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80)) ;http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
 
  (setq truncate-partial-width-windows nil)       ; Don't truncate long lines in horizontally split win
  (setq indicate-empty-lines t)                   ; Show empty lines
@@ -28,6 +30,8 @@
  (setq grep-command "grep -iIrne \"PATTERN\" .") ;"grep -iIrn --exclude-dir=\"\\.svn\" --include=\"*\\.*\" -e \"PATTERN \" .")
 ; (setq find-grep-command "find -name \"*.js\" -not -path \"./directory/*\"")
 ; (setq find-program "c:/Program Files (x86)/Git/bin/find.exe")
+
+ (setq compare-ignore-whitespace t)              ; https://www.gnu.org/software/emacs/manual/html_node/emacs/Comparing-Files.html
 
 ;(setq sentence-end-double-space nil)            ; Sentences end with one space   
 ;(setq mouse-yank-at-point t)                    ; Paste at cursor position
@@ -85,9 +89,6 @@
 
 
 ;MISCELLANEOUS
-
-;http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
- (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
 
 ;http://xahlee.org/emacs/emacs_installing_packages.html
 ;http://www.haskell.org/haskellwiki/Haskell_mode_for_Emacs
@@ -151,22 +152,20 @@ by using nxml's indentation rules."
       (indent-region begin end))
     (message "Ah, much better!"))
 
-;http://everything2.com/title/Tips+for+using+GNU+Emacs+in+MS+Windows
- (setq w32-use-full-screen-buffer nil)
-
 ;http://www.gnu.org/software/emacs/windows/Installing-Emacs.html#Installing-Emacs
- (server-start)
+; (server-start)
 
  (defalias 'rof 'recentf-open-files)
  (defalias 'yes-or-no-p 'y-or-n-p)              ; y/n instead of yes/no
  (defalias 'qrr 'query-replace-regexp)          ; Define an alias
 
- (global-set-key (kbd "<f4>") 'kill-this-buffer)
+ (global-set-key (kbd "<f4>") 'kill-this-buffer) 
  (global-set-key (kbd "<f5>") '(lambda () (interactive)(enlarge-window 5)))
  (global-set-key (kbd "<f6>") 'whitespace-mode)
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
  (global-set-key (kbd "<f8>") 'next-buffer)
  (global-set-key (kbd "<f9>") 'other-window)
+ (global-set-key (kbd "<f10>") 'compare-windows)
 
  (global-set-key "\C-c\C-s" 'create-shell)
  (global-set-key "\C-c\C-d" 'insert-date)
@@ -183,3 +182,5 @@ by using nxml's indentation rules."
 ; http://www.emacswiki.org/emacs/McMahanEmacsConfiguration
 ; http://www.masteringemacs.org/articles/2011/02/08/mastering-key-bindings-emacs/
 (put 'upcase-region 'disabled nil)
+
+
