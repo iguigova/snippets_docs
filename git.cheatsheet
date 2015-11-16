@@ -27,6 +27,17 @@ CREATE FROM REMOTE
 git clone <url>
 git checkout --track -b <branchname> <remote>/<branch>
 
+(RANDOM) COMMANDS
+
+git log --no-merges --pretty=format:'%Cgreen%h%Creset %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08% (%cr%x08%x08%x08%x08) %C(yellow)%cn%Creset %s'
+git log --name-status --diff-filter='ACDMRT'
+
+git config --global alias.diffs "diff --staged -w"
+
+http://stackoverflow.com/questions/5343068/is-there-a-way-to-skip-password-typing-when-using-https-github
+https://help.github.com/articles/caching-your-github-password-in-git/
+git config --global credential.helper wincred
+
 REFERENCES
 
 GitHub Help
