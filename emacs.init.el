@@ -176,7 +176,8 @@ by using nxml's indentation rules."
  (global-set-key (kbd "<f8>") 'next-buffer)
  (global-set-key (kbd "<f9>") 'other-window)
  (global-set-key (kbd "<f10>") 'compare-windows)
-
+ (global-set-key (kbd "<f11>") 'ido-switch-buffer)
+ 
  (global-set-key "\C-c\C-s" 'create-shell)
  (global-set-key "\C-c\C-h" 'sh-shell)
  (global-set-key "\C-c\C-d" 'insert-date)
