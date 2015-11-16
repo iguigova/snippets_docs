@@ -125,6 +125,16 @@
     (let ((shell-name (read-string "shell name: " nil)))
     (shell (concat "*" shell-name "*"))))
 
+;http://stackoverflow.com/questions/235254/how-can-i-run-cygwin-bash-shell-from-within-emacs
+;http://stackoverflow.com/questions/16676750/windows-emacs-git-bash-and-shell-command
+ (defun sh-shell ()
+  "Run git sh in shell mode."
+  (interactive)
+  (let ((explicit-shell-file-name "C:/Program Files (x86)/Git/bin/sh.exe")
+    ;(shell-file-name explicit-shell-file-name)
+    (explicit-sh.exe-args '("--login" "-i")))
+    (call-interactively 'create-shell)))
+
 ;http://stackoverflow.com/questions/251908/how-can-i-insert-current-date-and-time-into-a-file-using-emacs
  (defun insert-time ()
   "Insert string for the current time"
@@ -168,6 +178,7 @@ by using nxml's indentation rules."
  (global-set-key (kbd "<f10>") 'compare-windows)
 
  (global-set-key "\C-c\C-s" 'create-shell)
+ (global-set-key "\C-c\C-h" 'sh-shell)
  (global-set-key "\C-c\C-d" 'insert-date)
  (global-set-key "\C-c\C-t" 'insert-time)
 
