@@ -38,6 +38,8 @@ http://stackoverflow.com/questions/5343068/is-there-a-way-to-skip-password-typin
 https://help.github.com/articles/caching-your-github-password-in-git/
 git config --global credential.helper wincred
 
+git config --global alias.ads '!git add . && git diffs && git status'
+
 REFERENCES
 
 GitHub Help
