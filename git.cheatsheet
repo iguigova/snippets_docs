@@ -46,6 +46,7 @@ curl -g -k -u <username>:<password> https://jenkins.betasabrina.com/api/xml?tree
 https://www.cloudbees.com/blog/taming-jenkins-json-api-depth-and-tree
 
 curl -s -g -k -u <username>:<password> "https://jenkins.betasabrina.com/job/<jobname>/lastBuild/api/json?tree=fullDisplayName,id,result,changeSet[items[date,msg,author[fullName],paths[file]]]"
+curl -g -k -u <username>:<password> -X POST "https://jenkins.betasabrina.com/job/<jobname>/build" -- to trigger a build
 
 REFERENCES
 
