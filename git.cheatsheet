@@ -32,13 +32,18 @@ git checkout --track -b <branchname> <remote>/<branch>
 git log --no-merges --pretty=format:'%Cgreen%h%Creset %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08% (%cr%x08%x08%x08%x08) %C(yellow)%cn%Creset %s'
 git log --name-status --diff-filter='ACDMRT'
 
-git config --global alias.diffs "diff --staged -w"
-
 http://stackoverflow.com/questions/5343068/is-there-a-way-to-skip-password-typing-when-using-https-github
 https://help.github.com/articles/caching-your-github-password-in-git/
 git config --global credential.helper wincred
 
-git config --global alias.ads '!git add . && git diffs && git status'
+List aliases: http://stackoverflow.com/questions/7066325/list-git-aliases
+git config --global alias.alias "config --get-regexp ^alias\."
+
+Remove alias: https://github.com/githubtraining/zzz_deprecated-feedback/issues/24
+git config --global --unset alias.lg
+
+git config --global alias.diffs "diff --staged -w"
+
 
 JENKINS...
 curl -g -k -u <username>:<password> https://jenkins.betasabrina.com/api/json?tree=jobs[name,lastBuild[number,timestamp,result]]
