@@ -63,7 +63,7 @@
  (line-number-mode 1)                            ; Show line number in mode-line
  (column-number-mode t)                          ; Show column number in mode-line
  (set-scroll-bar-mode 'right)                    ; Scrollbar on the right
- (flyspell-mode 1)                               ; Auto spell-check
+;(flyspell-mode 1)                               ; Auto spell-check
  (delete-selection-mode t)                       ; Delete selection enabled
  (recentf-mode 1)                                ; Recent files menu enabled
  (ido-mode 1)                                    ; Remaps 'find-file' + 'switch-to-buffer' keybindings
@@ -123,14 +123,15 @@
     "Creates a shell with a given name"
     (interactive);; "Prompt\n shell name:")
     (let ((shell-name (read-string "shell name: " nil)))
-    (shell (concat "*" shell-name "*"))))
+
+       (shell (concat "*" shell-name "*"))))
 
 ;http://stackoverflow.com/questions/235254/how-can-i-run-cygwin-bash-shell-from-within-emacs
 ;http://stackoverflow.com/questions/16676750/windows-emacs-git-bash-and-shell-command
  (defun sh-shell ()
   "Run git sh in shell mode."
   (interactive)
-  (let ((explicit-shell-file-name "C:/Program Files (x86)/Git/bin/sh.exe")
+  (let ((explicit-shell-file-name "C:/Users/Dev/AppData/Local/Programs/Git/bin/sh.exe")
     ;(shell-file-name explicit-shell-file-name)
     (explicit-sh.exe-args '("--login" "-i")))
     (call-interactively 'create-shell)))
@@ -146,7 +147,18 @@
   (interactive)                 ; permit invocation in minibuffer
   (insert (format-time-string "%Y-%m-%d")))
 
-;http://stackoverflow.com/questions/12492/pretty-printing-xml-files-on-emacs 
+;http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
+ (defun joaot/delete-process-at-point ()
+  (interactive)
+  (let ((process (get-text-property (point) 'tabulated-list-id)))
+    (cond ((and process
+                (processp process))
+           (delete-process process)
+           (revert-buffer))
+          (t
+           (error "no process at point!")))))
+
+ ;http://stackoverflow.com/questions/12492/pretty-printing-xml-files-on-emacs 
  (defun bf-pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
 http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
@@ -183,6 +195,8 @@ by using nxml's indentation rules."
  (global-set-key "\C-c\C-d" 'insert-date)
  (global-set-key "\C-c\C-t" 'insert-time)
 
+ (define-key process-menu-mode-map (kbd "C-k") 'joaot/delete-process-at-point)
+
 ;References
 ; http://homepages.inf.ed.ac.uk/s0243221/emacs/
 ; http://www.gnu.org/software/emacs/windows/big.html#Display-Settings
@@ -194,5 +208,3 @@ by using nxml's indentation rules."
 ; http://www.emacswiki.org/emacs/McMahanEmacsConfiguration
 ; http://www.masteringemacs.org/articles/2011/02/08/mastering-key-bindings-emacs/
 (put 'upcase-region 'disabled nil)
-
-
