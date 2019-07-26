@@ -44,6 +44,15 @@ git config --global --unset alias.lg
 
 git config --global alias.diffs "diff --staged -w"
 
+alias.lg log --no-merges --pretty=format:'%Cgreen%h%Creset %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08% (%cr%x08%x08%x08%x08) %C(yellow)%cn%Creset %s'
+alias.diffs diff --staged -w
+alias.s status
+alias.psh ! git push origin & git lg -10 & git s
+alias.aliases config --get-regexp ^alias\.
+alias.index ! git add . & git diffs
+alias.renew ! git pull origin & git lg -10
+alias.replay ! git pull --rebase origin & git lg -10
+alias.ssh (ssh-agent -s) | ssh-add ~/.ssh/id_rsa
 
 JENKINS...
 curl -g -k -u <username>:<password> https://jenkins.betasabrina.com/api/json?tree=jobs[name,lastBuild[number,timestamp,result]]
