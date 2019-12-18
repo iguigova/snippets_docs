@@ -3,7 +3,7 @@
 
  (setq inhibit-startup-message t)                ; No message at startup
  (setq frame-title-format "%f (%i) - %b")        ; Use buffer name as frame title
- (setq initial-frame-alist '((top . 20) (left . 100) (width . 80) (height . 40)))
+ (setq initial-frame-alist '((top . 280) (left . 880) (width . 140) (height . 50)))
  (setq default-major-mode 'text-mode)            ; Text-mode is default mode
  (setq visible-bell t)                           ; No beep when reporting errors
  (setq confirm-kill-emacs 'yes-or-no-p)          ; Confirm quit
@@ -50,6 +50,7 @@
  (set-background-color "#222222")                ; Background color
  (set-foreground-color "white")                  ; Foreground color
  (set-cursor-color "white")                      ; Cursor color 
+ (set-face-attribute 'default nil :height 80)    ; increase font size for better readability
 
 ;(put 'narrow-to-region  'disabled nil)          ; Allow narrow-to-region command
 ;...
@@ -87,6 +88,7 @@
 ;(setq auto-fill-mode 1)                         ; auto-formatting in all major modes
 ;(add-hook 'text-mode-hook 'turn-on-auto-fill)   ; auto-formatting in text-mode
 
+ (put 'dired-find-alternate-file 'disabled nil)  ; https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
 
 ;MISCELLANEOUS
 
@@ -187,7 +189,8 @@ by using nxml's indentation rules."
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
  (global-set-key (kbd "<f8>") 'next-buffer)
  (global-set-key (kbd "<f9>") 'other-window)
- (global-set-key (kbd "<f10>") 'compare-windows)
+; (global-set-key (kbd "<f10>") 'compare-windows)
+ (global-set-key (kbd "<f10>") 'cider-selector) ; https://docs.cider.mx/cider/usage/misc_features.html
  (global-set-key (kbd "<f11>") 'ido-switch-buffer)
  
  (global-set-key "\C-c\C-s" 'create-shell)
@@ -208,3 +211,33 @@ by using nxml's indentation rules."
 ; http://www.emacswiki.org/emacs/McMahanEmacsConfiguration
 ; http://www.masteringemacs.org/articles/2011/02/08/mastering-key-bindings-emacs/
 (put 'upcase-region 'disabled nil)
+
+; http://clojure-doc.org/articles/tutorials/emacs.html
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(package-initialize)
+
+(defvar my-packages '(projectile
+                      clojure-mode
+                      cider))
+
+(dolist (p my-packages)
+  (unless (package-installed-p p)
+    (package-install p)))
+	
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (paredit cider clojure-mode projectile))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(add-hook 'clojure-mode-hook #'enable-paredit-mode)
+
