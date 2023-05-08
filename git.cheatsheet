@@ -42,17 +42,21 @@ git config --global alias.alias "config --get-regexp ^alias\."
 Remove alias: https://github.com/githubtraining/zzz_deprecated-feedback/issues/24
 git config --global --unset alias.lg
 
-git config --global alias.diffs "diff --staged -w"
+https://stackoverflow.com/questions/64418290/set-up-git-alias-with-an-input-argument
 
-alias.lg log --no-merges --pretty=format:'%Cgreen%h%Creset %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08% (%cr%x08%x08%x08%x08) %C(yellow)%cn%Creset %s'
-alias.diffs diff --staged -w
-alias.s status
-alias.psh ! git push origin & git lg -10 & git s
-alias.aliases config --get-regexp ^alias\.
-alias.index ! git add . & git diffs
-alias.renew ! git pull origin & git lg -10
-alias.replay ! git pull --rebase origin & git lg -10
 alias.ssh (ssh-agent -s) | ssh-add ~/.ssh/id_rsa
+alias.alias config --get-regexp ^alias\.
+alias.rma !f() { git config --global --unset "alias.$1"; }; f
+alias.s status
+alias.diffs diff --staged -w
+alias.lg log --no-merges --pretty=format:'%Cgreen%h%Creset %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08% (%cr%x08%x08%x08%x08) %C(yellow)%cn%Creset %s'
+alias.index ! git add . && git diffs
+alias.psh ! git push origin && git lg -10 && git s
+alias.pll ! git pull origin && git lg -10 && git s
+alias.feature !f() { git checkout -b $1 && git push --set-upstream origin $1; }; f
+
+https://stackoverflow.com/questions/1519006/how-do-i-create-a-remote-git-branch
+git config --global push.default current
 
 JENKINS...
 curl -g -k -u <username>:<password> https://jenkins.betasabrina.com/api/json?tree=jobs[name,lastBuild[number,timestamp,result]]
