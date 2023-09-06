@@ -54,6 +54,7 @@ alias.index ! git add . && git diffs
 alias.psh ! git push origin && git lg -10 && git s
 alias.pll ! git pull origin && git lg -10 && git s
 alias.feature !f() { git checkout -b $1 && git push --set-upstream origin $1; }; f
+alias.rm !f() { find . -type f -name $1 -delete; }; f
 
 https://stackoverflow.com/questions/1519006/how-do-i-create-a-remote-git-branch
 git config --global push.default current
