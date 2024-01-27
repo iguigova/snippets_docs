@@ -198,6 +198,8 @@ by using nxml's indentation rules."
  (defalias 'rof 'recentf-open-files)
  (defalias 'yes-or-no-p 'y-or-n-p)              ; y/n instead of yes/no
  (defalias 'qrr 'query-replace-regexp)          ; Define an alias
+;https://www.emacswiki.org/emacs/YesOrNoP
+ (setq use-short-answers t)
 
  (global-set-key (kbd "<f4>") 'kill-this-buffer) 
  (global-set-key (kbd "<f5>") '(lambda () (interactive)(enlarge-window 5)))
