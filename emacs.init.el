@@ -4,6 +4,8 @@
  (setq inhibit-startup-message t)                ; No message at startup
  (setq frame-title-format "%f (%i) - %b")        ; Use buffer name as frame title
  (setq initial-frame-alist '((top . 280) (left . 880) (width . 140) (height . 50)))
+ (setq split-width-threshold 9999)               ; Horizontal splitting https://www.emacswiki.org/emacs/HorizontalSplitting
+ (setq pop-up-windows nil)                       ; Reuse windows https://emacs.stackexchange.com/questions/20492/how-can-i-get-a-sensible-split-window-policy
  (setq default-major-mode 'text-mode)            ; Text-mode is default mode
  (setq visible-bell t)                           ; No beep when reporting errors
  (setq confirm-kill-emacs 'yes-or-no-p)          ; Confirm quit
@@ -17,10 +19,10 @@
  (setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
 
  (setq-default indent-tabs-mode nil)             ; Use spaces instead of tabs
- (setq tab-width 4)                              ; Length of tab is 4 SPC
+ (setq tab-width 2)                              ; Length of tab is N SPC
  (setq indent-line-function 'insert-tab)
  (setq standard-indent 4)                        ; Set Indent Size
- (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80)) ;http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
+ (setq tab-stop-list '(2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80)) ;http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
 
  (setq truncate-partial-width-windows nil)       ; Don't truncate long lines in horizontally split win
  (setq indicate-empty-lines t)                   ; Show empty lines
@@ -32,6 +34,10 @@
 ; (setq find-program "c:/Program Files (x86)/Git/bin/find.exe")
 
  (setq compare-ignore-whitespace t)              ; https://www.gnu.org/software/emacs/manual/html_node/emacs/Comparing-Files.html
+ (setq create-lockfiles nil)                     ; https://github.com/boot-clj/boot/wiki/Running-on-Windows
+
+ (setq cider-show-error-buffer nil)              ;https://stackoverflow.com/questions/59021212/how-can-i-prevent-an-emacs-error-message-window-from-stealing-focus-and-requirin
+ (setq cider-auto-select-error-buffer nil)
 
 ;(setq sentence-end-double-space nil)            ; Sentences end with one space   
 ;(setq mouse-yank-at-point t)                    ; Paste at cursor position
@@ -133,7 +139,7 @@
  (defun sh-shell ()
   "Run git sh in shell mode."
   (interactive)
-  (let ((explicit-shell-file-name "C:/Users/Dev/AppData/Local/Programs/Git/bin/sh.exe")
+  (let ((explicit-shell-file-name "c:/Program Files/Git/bin/sh.exe")
     ;(shell-file-name explicit-shell-file-name)
     (explicit-sh.exe-args '("--login" "-i")))
     (call-interactively 'create-shell)))
@@ -148,6 +154,16 @@
   "Insert current date yyyy-mm-dd."
   (interactive)                 ; permit invocation in minibuffer
   (insert (format-time-string "%Y-%m-%d")))
+
+ (defun reshell-current-buffer ()
+  "Kills the process in the current buffer and starts a new shell in it"
+  (interactive)
+  (delete-process (get-buffer-process(current-buffer)))
+  ;(shell (current-buffer)))  
+  (let ((explicit-shell-file-name "c:/Program Files/Git/bin/sh.exe")
+    ;(shell-file-name explicit-shell-file-name)
+    (explicit-sh.exe-args '("--login" "-i")))
+    (shell (current-buffer))))
 
 ;http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
  (defun joaot/delete-process-at-point ()
@@ -195,6 +211,7 @@ by using nxml's indentation rules."
  
  (global-set-key "\C-c\C-s" 'create-shell)
  (global-set-key "\C-c\C-h" 'sh-shell)
+ (global-set-key "\C-c\C-j" 'reshell-current-buffer)
  (global-set-key "\C-c\C-d" 'insert-date)
  (global-set-key "\C-c\C-t" 'insert-time)
 
@@ -240,4 +257,3 @@ by using nxml's indentation rules."
  )
 
 (add-hook 'clojure-mode-hook #'enable-paredit-mode)
-
