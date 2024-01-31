@@ -2,24 +2,24 @@
 # The Repo
         
 - install [git](https://git-scm.com/downloads)
-        - a sample cheat sheet and a set of aliases can be found [here](https://github.com/iguigova/snippets_docs/blob/master/git.cheatsheet)
-                
+  - a sample cheat sheet and a set of aliases can be found [here](https://github.com/iguigova/snippets_docs/blob/master/git.cheatsheet)
 - create SSH keys: for example, follow these [instructions](https://www.atlassian.com/git/tutorials/git-ssh)
 - share your public key with Scott: for example, copy out ~/.ssh/id_ed25519.pub
 - run: `git clone username@3.88.22.153:/aeonic` where username is a placeholder for the one given to you by Scott
-        - let `[AEONIC]` be the folder where the repo is cloned to
+  - let `[AEONIC]` be the folder where the repo is cloned to
         
 *note: `~` = `c:/Users/[your-username]` on Windows*
         
 # The Editor
         
 - install [Emacs](https://www.gnu.org/software/emacs/download.html)
-        - some sample init files can be found in the docs folder
-- consider VS Code
+  - some sample init files can be found in the docs folder
+  - TODO: add information about cider extension / cheat sheet / etc.
         
 # More Prerequisites
         
 - install [Java](https://www.oracle.com/java/technologies/downloads/)
+- install [clojure](https://clojure.org/guides/install_clojure)
 - install [leiningen](https://leiningen.org/)        
 - install [mvn](https://maven.apache.org/download.cgi)       
 - install [gpg](https://gnupg.org/download/)
@@ -55,11 +55,11 @@ shadow-cljs - watching build :app
 {#"my\.datomic\.com" {:username "ilka@invisiblerobot.ai"
                       :password "aaa9012b-c605-4c74-9050-5f775bdc0b38"}}
 ```
-- cd ~/.lein
+- `cd ~/.lein`
 - create `credentials.clj` file
-        - copy the credentials into it
-        - [sign](https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md#authentication) it
-                - run: `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
+  - copy the credentials into it
+  - [sign](https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md#authentication) it
+    - run: `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
         
 ### loom
 - find the enclosed loom folder: the pom file and the jar file
