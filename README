@@ -1,6 +1,102 @@
-This repository contains a number of doclets. It is my reference to data available on the web for quicker access.
 
-Your feedback is welcomed. 
+# The Repo
+        
+- install [git](https://git-scm.com/downloads)
+        - a sample cheat sheet and a set of aliases can be found [here](https://github.com/iguigova/snippets_docs/blob/master/git.cheatsheet)
+                
+- create SSH keys: for example, follow these [instructions](https://www.atlassian.com/git/tutorials/git-ssh)
+- share your public key with Scott: for example, copy out ~/.ssh/id_ed25519.pub
+- run: `git clone username@3.88.22.153:/aeonic` where username is a placeholder for the one given to you by Scott
+        - let <AEONIC> be the folder where the repo is cloned to
+        
+note: ~ = c:/Users/<your-username> on Windows
+        
+# The Editor
+        
+- install [Emacs](https://www.gnu.org/software/emacs/download.html)
+        - some sample init files can be found in the docs folder
+        
+# More Prerequisites
+        
+- install [Java](https://www.oracle.com/java/technologies/downloads/)
+- install [leiningen](https://leiningen.org/)        
+- install [mvn](https://maven.apache.org/download.cgi)       
+- install [gpg](https://gnupg.org/download/)
+- install [node.js/npm](https://nodejs.org/en/download)
 
-Thank you, 
-Ilka / iguigova@gmail.com
+note: depending on OS, installers, and what not, consider adding the above exe to your env PATH
+
+# Getting Started
+
+- cd <AEONIC>/app
+- `lein deps`
+OR
+- `npm install`
+- `npx babel src/js --out-dir src/gen --watch --extensions '.ts,.tsx,.js'`
+- `npm run watch`
+- go to one of
+```
+shadow-cljs - HTTP server available at http://localhost:8280
+shadow-cljs - HTTP server available at http://localhost:8290
+shadow-cljs - server version: 2.19.9 running at http://localhost:9630
+shadow-cljs - nREPL server started on port 8777
+shadow-cljs - watching build :app
+```
+
+## Troubleshooting
+### datomic credentials
+
+- create [gpg keys](https://github.com/technomancy/leiningen/blob/stable/doc/GPG.md)
+        - run: `gpg --gen-key`
+        - run: `gpg --list-keys`        
+        
+- create an account at [datomic](https://my.datomic.com/)
+- go to the bottom of the [page](](https://my.datomic.com/)) and copy out the credentials
+```
+;; ~/.lein/credentials.clj.gpg (see the Leiningen deploy authentication docs)
+{#"my\.datomic\.com" {:username "ilka@invisiblerobot.ai"
+                      :password "aaa9012b-c605-4c74-9050-5f775bdc0b38"}}
+
+;; project.clj
+:repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"
+                                 :creds :gpg}}
+:dependencies [[com.datomic/datomic-pro $VERSION]]
+```
+- cd ~/.lein
+- create `credentials.clj` file
+        - copy the credentials into it
+        - [sign](https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md#authentication) it
+        - run: `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
+- remove `credentials.clj file`
+
+        
+### loom
+- find the enclose loom folder: the pom file and the jar file
+- run: `mvn install:install-file -Dfile="1.0.3-SNAPSHOT.jar" -DgroupId="aysylu" -DartifactId="loom" -Dversion="1.0.3-SNAPSHOT" -Dpackaging="jar"`
+
+note: your maven repository is at ~/.m2 
+        
+# The REPL
+
+
+# The Database
+- install [Datomic Pro](https://docs.datomic.com/pro/getting-started/get-datomic.html)
+        - let <DATOMIC> be the folder where the installation was unzipped to 
+- read [local dev setup](https://docs.datomic.com/pro/getting-started/dev-setup.html)
+- read [run a transactor](https://docs.datomic.com/pro/getting-started/transactor.html)
+- read [connect to a database](https://docs.datomic.com/pro/getting-started/connect-to-a-database.html)
+- read [restore database](https://docs.datomic.com/pro/operation/backup.html#restoring)
+
+- locate and unzip the backup db
+        - let <KREWZ> be the folder that contains the backup file
+
+```
+ <DATOMIC>/bin/datomic -Xmx4g -Xms4g restore-db file:<KREWZ> "datomic:dev://localhost:4334/krewz"
+
+(def krewz-uri "datomic:dev://localhost:4334/krewz")
+(def krewz-conn (d/connect krewz-uri))
+(def db (d/db krewz-conn))
+(def all-labourers '[:find ?e
+          :where [?e :laborer/name]])
+(d/q all-labourers db)
+```
