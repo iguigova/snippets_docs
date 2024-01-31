@@ -66,7 +66,7 @@
  (menu-bar-mode nil)                             ; No menubar
  (tool-bar-mode 0)                               ; No toolbar
  (icomplete-mode t)                              ; Completion in mini-buffer
- (global-linum-mode 1)                           ; Show line number on each row
+ (global-display-line-numbers-mode 1)            ; Show line number on each row
  (line-number-mode 1)                            ; Show line number in mode-line
  (column-number-mode t)                          ; Show column number in mode-line
  (set-scroll-bar-mode 'right)                    ; Scrollbar on the right
@@ -198,11 +198,9 @@ by using nxml's indentation rules."
  (defalias 'rof 'recentf-open-files)
  (defalias 'yes-or-no-p 'y-or-n-p)              ; y/n instead of yes/no
  (defalias 'qrr 'query-replace-regexp)          ; Define an alias
-;https://www.emacswiki.org/emacs/YesOrNoP
- (setq use-short-answers t)
 
  (global-set-key (kbd "<f4>") 'kill-this-buffer) 
- (global-set-key (kbd "<f5>") '(lambda () (interactive)(enlarge-window 5)))
+ (global-set-key (kbd "<f5>") #'(lambda () (interactive)(enlarge-window 5)))
  (global-set-key (kbd "<f6>") 'whitespace-mode)
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
  (global-set-key (kbd "<f8>") 'next-buffer)
