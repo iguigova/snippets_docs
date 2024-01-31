@@ -82,10 +82,9 @@ note: your maven repository is at ~/.m2
 
 - locate and unzip the backup db
         - let <KREWZ> be the folder that contains the backup file
+- run: `<DATOMIC>/bin/datomic -Xmx4g -Xms4g restore-db file:<KREWZ> "datomic:dev://localhost:4334/krewz"`
 
 ```
- <DATOMIC>/bin/datomic -Xmx4g -Xms4g restore-db file:<KREWZ> "datomic:dev://localhost:4334/krewz"
-
 (def krewz-uri "datomic:dev://localhost:4334/krewz")
 (def krewz-conn (d/connect krewz-uri))
 (def db (d/db krewz-conn))
