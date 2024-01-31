@@ -24,7 +24,7 @@ note: ~ = c:/Users/<your-username> on Windows
 - install [gpg](https://gnupg.org/download/)
 - install [node.js/npm](https://nodejs.org/en/download)
 
-note: depending on OS, installers, and what not, consider adding the above exe to your env PATH
+note: depending on OS, installers, and what not, consider adding the above exes to your env PATH
 
 # Getting Started
 
