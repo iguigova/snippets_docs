@@ -1,3 +1,19 @@
+  # Prerequisites
+        
+- install [Java](https://www.oracle.com/java/technologies/downloads/)
+- install [clojure](https://clojure.org/guides/install_clojure)
+- install [leiningen](https://leiningen.org/)        
+- install [mvn](https://maven.apache.org/download.cgi)       
+- install [gpg](https://gnupg.org/download/)
+- install [node.js/npm](https://nodejs.org/en/download)
+
+*note: depending on OS, installers, and what not, consider adding the above exes to your env `PATH` variable*
+
+# The Editor
+        
+- install [Emacs](https://www.gnu.org/software/emacs/download.html)
+  - some sample init files can be found in the docs folder
+  - TODO: add information about cider extension / cheat sheet / etc.
 
 # The Repo
         
@@ -11,26 +27,8 @@
 let `[AEONIC]` be the folder where the repo is cloned to.
         
 *note: `~` = `c:/Users/[your-username]` on Windows*
-        
-# The Editor
-        
-- install [Emacs](https://www.gnu.org/software/emacs/download.html)
-  - some sample init files can be found in the docs folder
-  - TODO: add information about cider extension / cheat sheet / etc.
-        
-# More Prerequisites
-        
-- install [Java](https://www.oracle.com/java/technologies/downloads/)
-- install [clojure](https://clojure.org/guides/install_clojure)
-- install [leiningen](https://leiningen.org/)        
-- install [mvn](https://maven.apache.org/download.cgi)       
-- install [gpg](https://gnupg.org/download/)
-- install [node.js/npm](https://nodejs.org/en/download)
 
-*note: depending on OS, installers, and what not, consider adding the above exes to your env `PATH` variable*
-
-# Getting Started
-## Clojurescript
+# Running the client / clojurescript
 - `cd [AEONIC]/app`
 - `npm install`
 - `npx babel src/js --out-dir src/gen --watch --extensions '.ts,.tsx,.js'`
