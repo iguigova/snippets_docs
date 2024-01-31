@@ -46,7 +46,8 @@ https://stackoverflow.com/questions/64418290/set-up-git-alias-with-an-input-argu
 
 alias.ssh (ssh-agent -s) | ssh-add ~/.ssh/id_rsa
 alias.alias config --get-regexp ^alias\.
-alias.rma !f() { git config --global --unset "alias.$1"; }; f
+alias.rma !f() { git config --global --unset "alias.$1"; }; 
+alias.snapshot !git stash push -m "snapshot: $(date)" && git stash apply "stash@{0}"
 alias.s status
 alias.diffs diff --staged -w
 alias.lg log --no-merges --pretty=format:'%Cgreen%h%Creset %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08% (%cr%x08%x08%x08%x08) %C(yellow)%cn%Creset %s'
