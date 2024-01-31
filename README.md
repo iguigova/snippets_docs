@@ -15,6 +15,7 @@
         
 - install [Emacs](https://www.gnu.org/software/emacs/download.html)
         - some sample init files can be found in the docs folder
+- consider VS Code
         
 # More Prerequisites
         
@@ -24,21 +25,18 @@
 - install [gpg](https://gnupg.org/download/)
 - install [node.js/npm](https://nodejs.org/en/download)
 
-note: depending on OS, installers, and what not, consider adding the above exes to your env PATH
+*note: depending on OS, installers, and what not, consider adding the above exes to your env `PATH` variable*
 
 # Getting Started
-
-- cd <AEONIC>/app
-- `lein deps`
-OR
+## Clojurescript
+- `cd [AEONIC]/app`
 - `npm install`
 - `npx babel src/js --out-dir src/gen --watch --extensions '.ts,.tsx,.js'`
 - `npm run watch`
-- go to one of
 ```
-shadow-cljs - HTTP server available at http://localhost:8280
-shadow-cljs - HTTP server available at http://localhost:8290
-shadow-cljs - server version: 2.19.9 running at http://localhost:9630
+shadow-cljs - HTTP server available at (http://localhost:8280)[http://localhost:8280]
+shadow-cljs - HTTP server available at (http://localhost:8290)[http://localhost:8290]
+shadow-cljs - server version: 2.19.9 running at (http://localhost:9630)[http://localhost:9630]
 shadow-cljs - nREPL server started on port 8777
 shadow-cljs - watching build :app
 ```
