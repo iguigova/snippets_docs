@@ -7,9 +7,9 @@
 - create SSH keys: for example, follow these [instructions](https://www.atlassian.com/git/tutorials/git-ssh)
 - share your public key with Scott: for example, copy out ~/.ssh/id_ed25519.pub
 - run: `git clone username@3.88.22.153:/aeonic` where username is a placeholder for the one given to you by Scott
-        - let [AEONIC] be the folder where the repo is cloned to
+        - let `[AEONIC]` be the folder where the repo is cloned to
         
-note: ~ = c:/Users/<your-username> on Windows
+*note: `~` = `c:/Users/[your-username]` on Windows*
         
 # The Editor
         
