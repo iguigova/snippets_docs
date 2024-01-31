@@ -56,22 +56,15 @@ shadow-cljs - watching build :app
 ;; ~/.lein/credentials.clj.gpg (see the Leiningen deploy authentication docs)
 {#"my\.datomic\.com" {:username "ilka@invisiblerobot.ai"
                       :password "aaa9012b-c605-4c74-9050-5f775bdc0b38"}}
-
-;; project.clj
-:repositories {"my.datomic.com" {:url "https://my.datomic.com/repo"
-                                 :creds :gpg}}
-:dependencies [[com.datomic/datomic-pro $VERSION]]
 ```
 - cd ~/.lein
 - create `credentials.clj` file
         - copy the credentials into it
         - [sign](https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md#authentication) it
-        - run: `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
-- remove `credentials.clj file`
-
+                - run: `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
         
 ### loom
-- find the enclose loom folder: the pom file and the jar file
+- find the enclosed loom folder: the pom file and the jar file
 - run: `mvn install:install-file -Dfile="1.0.3-SNAPSHOT.jar" -DgroupId="aysylu" -DartifactId="loom" -Dversion="1.0.3-SNAPSHOT" -Dpackaging="jar"`
 
 note: your maven repository is at ~/.m2 
