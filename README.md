@@ -22,7 +22,7 @@
 - create SSH keys: for example, follow these [instructions](https://www.atlassian.com/git/tutorials/git-ssh)
 - share your public key with Scott: for example, copy out `~/.ssh/id_ed25519.pub`
   
-- run: `git clone username@3.88.22.153:/aeonic` where username is a placeholder for the one given to you by Scott
+- `git clone username@3.88.22.153:/aeonic` where username is a placeholder for the one given to you by Scott
 
 let `[AEONIC]` be the folder where the repo is cloned to.
         
@@ -45,11 +45,10 @@ shadow-cljs - watching build :app
 ### datomic credentials
 
 - create [gpg keys](https://github.com/technomancy/leiningen/blob/stable/doc/GPG.md)
-        - `gpg --gen-key`
-        - `gpg --list-keys`        
-        
+  - `gpg --gen-key`
+  - `gpg --list-keys`              
 - create an account at [datomic](https://my.datomic.com/)
-- go to the bottom of the [page](https://my.datomic.com/) and copy out the credentials
+  - go to the bottom of the [page](https://my.datomic.com/) and copy out the credentials
 ```
 ;; ~/.lein/credentials.clj.gpg (see the Leiningen deploy authentication docs)
 {#"my\.datomic\.com" {:username "ilka@invisiblerobot.ai"
@@ -59,11 +58,11 @@ shadow-cljs - watching build :app
 - create `credentials.clj` file
   - copy the credentials into it
   - [sign](https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md#authentication) it
-    - run: `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
+    - `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
         
 ### loom
 - find the enclosed loom folder: the pom file and the jar file
-- run: `mvn install:install-file -Dfile="1.0.3-SNAPSHOT.jar" -DgroupId="aysylu" -DartifactId="loom" -Dversion="1.0.3-SNAPSHOT" -Dpackaging="jar"`
+- `mvn install:install-file -Dfile="1.0.3-SNAPSHOT.jar" -DgroupId="aysylu" -DartifactId="loom" -Dversion="1.0.3-SNAPSHOT" -Dpackaging="jar"`
 
 note: your maven repository is at ~/.m2 
         
@@ -72,16 +71,21 @@ note: your maven repository is at ~/.m2
 
 # The Database
 - install [Datomic Pro](https://docs.datomic.com/pro/getting-started/get-datomic.html)
-        - let <DATOMIC> be the folder where the installation was unzipped to 
+
+let [DATOMIC] be the folder where the installation was unzipped to
+
 - read [local dev setup](https://docs.datomic.com/pro/getting-started/dev-setup.html)
 - read [run a transactor](https://docs.datomic.com/pro/getting-started/transactor.html)
 - read [connect to a database](https://docs.datomic.com/pro/getting-started/connect-to-a-database.html)
 - read [restore database](https://docs.datomic.com/pro/operation/backup.html#restoring)
 
 - locate and unzip the backup db
-        - let <KREWZ> be the folder that contains the backup file
-- run: `<DATOMIC>/bin/datomic -Xmx4g -Xms4g restore-db file:<KREWZ> "datomic:dev://localhost:4334/krewz"`
 
+let [KREWZ] be the folder that contains the backup file
+
+- `[DATOMIC]/bin/datomic -Xmx4g -Xms4g restore-db file:[KREWZ "datomic:dev://localhost:4334/krewz"`
+
+in the repl: 
 ```
 (def krewz-uri "datomic:dev://localhost:4334/krewz")
 (def krewz-conn (d/connect krewz-uri))
@@ -90,3 +94,4 @@ note: your maven repository is at ~/.m2
           :where [?e :laborer/name]])
 (d/q all-labourers db)
 ```
+## Troubleshooting
