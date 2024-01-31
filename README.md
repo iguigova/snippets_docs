@@ -45,11 +45,11 @@ shadow-cljs - watching build :app
 ### datomic credentials
 
 - create [gpg keys](https://github.com/technomancy/leiningen/blob/stable/doc/GPG.md)
-        - run: `gpg --gen-key`
-        - run: `gpg --list-keys`        
+        - `gpg --gen-key`
+        - `gpg --list-keys`        
         
 - create an account at [datomic](https://my.datomic.com/)
-- go to the bottom of the [page](](https://my.datomic.com/)) and copy out the credentials
+- go to the bottom of the [page](https://my.datomic.com/) and copy out the credentials
 ```
 ;; ~/.lein/credentials.clj.gpg (see the Leiningen deploy authentication docs)
 {#"my\.datomic\.com" {:username "ilka@invisiblerobot.ai"
