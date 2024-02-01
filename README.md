@@ -19,10 +19,10 @@
         
 - install [git](https://git-scm.com/downloads)
   - a sample cheat sheet and a set of aliases can be found [here](https://github.com/iguigova/snippets_docs/blob/master/git.cheatsheet)
-- create SSH keys: for example, follow these [instructions](https://www.atlassian.com/git/tutorials/git-ssh)
-- share your public key with Scott: for example, copy out `~/.ssh/id_ed25519.pub`
+- create SSH keys: *example: [instructions](https://www.atlassian.com/git/tutorials/git-ssh)*
+- share your public key with Scott: *example: `~/.ssh/id_ed25519.pub`*
   
-- `git clone username@3.88.22.153:/aeonic` where username is a placeholder for the one given to you by Scott
+- `git clone [username]@3.88.22.153:/aeonic` where [username] has been assign to you by Scott
 
 let `[AEONIC]` be the folder where the repo is cloned to.
         
@@ -48,23 +48,22 @@ shadow-cljs - watching build :app
   - `gpg --gen-key`
   - `gpg --list-keys`              
 - create an account at [datomic](https://my.datomic.com/)
-  - go to the bottom of the [page](https://my.datomic.com/) and copy out the credentials
+  - copy the credentials at the bottom of the [page](https://my.datomic.com/)
 ```
 ;; ~/.lein/credentials.clj.gpg (see the Leiningen deploy authentication docs)
 {#"my\.datomic\.com" {:username "ilka@invisiblerobot.ai"
                       :password "aaa9012b-c605-4c74-9050-5f775bdc0b38"}}
 ```
 - `cd ~/.lein`
-- create `credentials.clj` file
+- create `credentials.clj` 
   - copy the credentials into it
-  - [sign](https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md#authentication) it
-    - `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
+  - [sign] it: (https://github.com/technomancy/leiningen/blob/master/doc/DEPLOY.md#authentication) `gpg --default-recipient-self -e ~/.lein/credentials.clj > ~/.lein/credentials.clj.gpg`
         
 ### loom
 - find the enclosed loom folder: the pom file and the jar file
 - `mvn install:install-file -Dfile="1.0.3-SNAPSHOT.jar" -DgroupId="aysylu" -DartifactId="loom" -Dversion="1.0.3-SNAPSHOT" -Dpackaging="jar"`
 
-note: your maven repository is at ~/.m2 
+*note: your maven repository is at `~/.m2`*
         
 # The REPL
 
