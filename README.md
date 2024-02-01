@@ -77,12 +77,8 @@ let [DATOMIC] be the folder where the installation was unzipped to
 - read [run a transactor](https://docs.datomic.com/pro/getting-started/transactor.html)
 - read [connect to a database](https://docs.datomic.com/pro/getting-started/connect-to-a-database.html)
 - read [restore database](https://docs.datomic.com/pro/operation/backup.html#restoring)
-
-- locate and unzip the backup db
-
-let [KREWZ] be the folder that contains the backup file
-
-- `[DATOMIC]/bin/datomic -Xmx4g -Xms4g restore-db file:[KREWZ "datomic:dev://localhost:4334/krewz"`
+  - locate and unzip the backup db: let [KREWZ] be the folder that contains the backup file
+  - `[DATOMIC]/bin/datomic -Xmx4g -Xms4g restore-db file:[KREWZ "datomic:dev://localhost:4334/krewz"`
 
 in the repl: 
 ```
