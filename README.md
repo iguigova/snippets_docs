@@ -137,6 +137,7 @@ dev/COLS
 (require '[krewz.queries :as qq])
 (db/query qq/emails-eligible-for-invite)
 
+(require '[krewz.inviter :as i])
 (i/ensure-email-is-lower-case {:email-address "text@t.Com" :white-list["texT@t.com"]})
 (i/context)
 
