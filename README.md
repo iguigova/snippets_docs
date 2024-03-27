@@ -65,9 +65,6 @@ shadow-cljs - watching build :app
 
 *note: your maven repository is at `~/.m2`*
         
-# The REPL
-
-
 # The Database
 - install [Datomic Pro](https://docs.datomic.com/pro/getting-started/get-datomic.html)
 
@@ -79,6 +76,8 @@ let [DATOMIC] be the folder where the installation was unzipped to
 - read [restore database](https://docs.datomic.com/pro/operation/backup.html#restoring)
   - locate and unzip the backup db: let [KREWZ] be the folder that contains the backup file
   - `[DATOMIC]/bin/datomic -Xmx4g -Xms4g restore-db file:[KREWZ "datomic:dev://localhost:4334/krewz"`
+- update `project.clj`, if you do not have postgres installed: `[com.h2database/h2 "2.2.224"]`
+- update `environment.clj`, `(envar :db-uri :string "datomic:dev://localhost:4334/krewz")`
 
 in the repl: 
 ```
@@ -88,5 +87,64 @@ in the repl:
 (def all-labourers '[:find ?e
           :where [?e :laborer/name]])
 (d/q all-labourers db)
+``` 
+
+# Running the server
+- the transactor needs to be running
+`[DATOMIC]/bin/transactor -Ddatomic.printConnectionInfo=true config/dev-transactor-template.properties`
+- `lein.bat ring server`
+
+# The REPL
+- cljs
 ```
+M-x cider-jack-in-cljs
+shadow
+shadow
+:app
+yes
+```
+- clj
+```
+M-x cider-jack-in-clj
+```
+
+## things to try in the cljs repl
+```
+(ns krewz.components.worker-clockin-v2)
+(subscribe logged-in-user)
+(subscribe :worker-clockin-v2)
+```
+
+## things to try in the clj repl
+```
+(require '[krewz.dev.datomic :as dev])
+(dir dev)
+dev/COLS
+(dev/job-tasks)
+
+(require '[krewz.db :as db])
+(require '[datomic.api :as d])
+(require '[krews.dev.datomic :as dev])
+
+
+(def test-db (d/db (d/connect (:db-uri dev/CONTEXT))))
+(def all-labourers '[:find ?e
+          :where [?e :laborer/name]])
+(d/q all-labourers test-db)
+
+
+(require '[krewz.db :as db])
+(require '[krewz.queries :as qq])
+(db/query qq/emails-eligible-for-invite)
+
+(i/ensure-email-is-lower-case {:email-address "text@t.Com" :white-list["texT@t.com"]})
+(i/context)
+
+(:krewz-weather (w/convert-to-krewz  (w/convert-to-krewz (w/get-weather (env/context)))))
+```
+
 ## Troubleshooting
+- [https://github.com/clojure-emacs/orchard/issues/100]
+
+# Other Tools
+- on Windows, TCPView to watch/kill the ports
