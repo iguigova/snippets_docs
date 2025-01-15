@@ -21,7 +21,7 @@
  (setq-default indent-tabs-mode nil)             ; Use spaces instead of tabs
  (setq tab-width 2)                              ; Length of tab is N SPC
  (setq indent-line-function 'insert-tab)
- (setq standard-indent 4)                        ; Set Indent Size
+ (setq standard-indent 2)                        ; Set Indent Size
  (setq tab-stop-list '(2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80)) ;http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
 
  (setq truncate-partial-width-windows nil)       ; Don't truncate long lines in horizontally split win
@@ -36,8 +36,13 @@
  (setq compare-ignore-whitespace t)              ; https://www.gnu.org/software/emacs/manual/html_node/emacs/Comparing-Files.html
  (setq create-lockfiles nil)                     ; https://github.com/boot-clj/boot/wiki/Running-on-Windows
 
- (setq cider-show-error-buffer nil)              ;https://stackoverflow.com/questions/59021212/how-can-i-prevent-an-emacs-error-message-window-from-stealing-focus-and-requirin
+ (setq cider-show-error-buffer nil)              ; https://stackoverflow.com/questions/59021212/how-can-i-prevent-an-emacs-error-message-window-from-stealing-focus-and-requirin
  (setq cider-auto-select-error-buffer nil)
+
+ ;; (setq web-mode-content-types-alist              ; https://stackoverflow.com/questions/57817741/how-to-make-web-mode-read-mjs-files-in-emacs
+ ;;      '(("jsx" . "\\.[c|m]js[x]?\\'")))
+
+ (add-to-list 'auto-mode-alist '("\\.[c|m]js[x]?\\'" . js-mode))
 
 ;(setq sentence-end-double-space nil)            ; Sentences end with one space   
 ;(setq mouse-yank-at-point t)                    ; Paste at cursor position
@@ -94,6 +99,8 @@
 ;(setq auto-fill-mode 1)                         ; auto-formatting in all major modes
 ;(add-hook 'text-mode-hook 'turn-on-auto-fill)   ; auto-formatting in text-mode
 
+ (global-auto-revert-mode 1)                     ; https://emacs.stackexchange.com/questions/169/how-do-i-reload-a-file-in-a-buffer
+
  (put 'dired-find-alternate-file 'disabled nil)  ; https://www.emacswiki.org/emacs/DiredReuseDirectoryBuffer
 
 ;MISCELLANEOUS
@@ -126,6 +133,12 @@
  (add-hook 'css-mode-hook 'hexcolour-add-to-font-lock)
  (add-hook 'html-mode-hook 'hexcolour-add-to-font-lock)
 
+; https://epkg.vercel.app/browse-url
+ (add-hook 'dired-mode-hook
+		  (lambda ()
+	             (local-set-key "\C-c\C-f" 'browse-url-of-dired-file)))
+(setq browse-url-save-file t)
+  
 ;http://stackoverflow.com/questions/6532998/how-to-run-multiple-shells-on-emacs
  (defun create-shell ()
     "Creates a shell with a given name"
@@ -139,7 +152,7 @@
  (defun sh-shell ()
   "Run git sh in shell mode."
   (interactive)
-  (let ((explicit-shell-file-name "c:/Program Files/Git/bin/sh.exe")
+  (let ((explicit-shell-file-name "/bin/bash")
     ;(shell-file-name explicit-shell-file-name)
     (explicit-sh.exe-args '("--login" "-i")))
     (call-interactively 'create-shell)))
@@ -160,12 +173,12 @@
   (interactive)
   (delete-process (get-buffer-process(current-buffer)))
   ;(shell (current-buffer)))  
-  (let ((explicit-shell-file-name "c:/Program Files/Git/bin/sh.exe")
+  (let ((explicit-shell-file-name "/bin/bash")
     ;(shell-file-name explicit-shell-file-name)
     (explicit-sh.exe-args '("--login" "-i")))
     (shell (current-buffer))))
 
-;http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
+;; ;http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
  (defun joaot/delete-process-at-point ()
   (interactive)
   (let ((process (get-text-property (point) 'tabulated-list-id)))
@@ -192,6 +205,17 @@ by using nxml's indentation rules."
       (indent-region begin end))
     (message "Ah, much better!"))
 
+; https://stackoverflow.com/questions/1085170/how-to-achieve-code-folding-effects-in-emacs
+(defun set-selective-display-dlw (&optional level)
+"Fold text indented same of more than the cursor.
+If level is set, set the indent level to LEVEL.
+If 'selective-display' is already set to LEVEL, clicking
+F5 again will unset 'selective-display' by setting it to 0."
+  (interactive "P")
+  (if (eq selective-display (1+ (current-column)))
+      (set-selective-display 0)
+    (set-selective-display (or level (1+ (current-column))))))
+
 ;http://www.gnu.org/software/emacs/windows/Installing-Emacs.html#Installing-Emacs
 ; (server-start)
 
@@ -199,23 +223,24 @@ by using nxml's indentation rules."
  (defalias 'yes-or-no-p 'y-or-n-p)              ; y/n instead of yes/no
  (defalias 'qrr 'query-replace-regexp)          ; Define an alias
 
+ (global-set-key (kbd "<f3>") 'cider-selector) ; https://docs.cider.mx/cider/usage/misc_features.html
  (global-set-key (kbd "<f4>") 'kill-this-buffer) 
  (global-set-key (kbd "<f5>") #'(lambda () (interactive)(enlarge-window 5)))
  (global-set-key (kbd "<f6>") 'whitespace-mode)
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
- (global-set-key (kbd "<f8>") 'next-buffer)
- (global-set-key (kbd "<f9>") 'other-window)
-; (global-set-key (kbd "<f10>") 'compare-windows)
- (global-set-key (kbd "<f10>") 'cider-selector) ; https://docs.cider.mx/cider/usage/misc_features.html
- (global-set-key (kbd "<f11>") 'ido-switch-buffer)
+ (global-set-key (kbd "<f8>") 'other-window)
+ (global-set-key (kbd "<f9>") 'set-selective-display-dlw)
+ (global-set-key (kbd "<f10>") 'previous-buffer)
+ (global-set-key (kbd "<f11>") 'next-buffer)
+ (global-set-key (kbd "<f12>") 'compare-windows)
  
  (global-set-key "\C-c\C-s" 'create-shell)
  (global-set-key "\C-c\C-h" 'sh-shell)
- (global-set-key "\C-c\C-j" 'reshell-current-buffer)
+ (global-set-key "\C-c\C-j" 'reshell-current-buffer) 
  (global-set-key "\C-c\C-d" 'insert-date)
  (global-set-key "\C-c\C-t" 'insert-time)
 
- (define-key process-menu-mode-map (kbd "C-k") 'joaot/delete-process-at-point)
+ ;; (define-key process-menu-mode-map (kbd "C-k") 'joaot/delete-process-at-point)
 
 ;References
 ; http://homepages.inf.ed.ac.uk/s0243221/emacs/
@@ -237,7 +262,8 @@ by using nxml's indentation rules."
 
 (defvar my-packages '(projectile
                       clojure-mode
-                      cider))
+                      cider
+                      web-mode))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)
@@ -248,7 +274,8 @@ by using nxml's indentation rules."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (paredit cider clojure-mode projectile))))
+ '(package-selected-packages
+   '(web-mode godoctor go-mode paredit cider clojure-mode projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
