@@ -9,20 +9,19 @@
  (setq default-major-mode 'text-mode)            ; Text-mode is default mode
  (setq visible-bell t)                           ; No beep when reporting errors
  (setq confirm-kill-emacs 'yes-or-no-p)          ; Confirm quit
- (setq undo-limit 100000)                        ; Increase number of undo
+ (setq undo-limit 1000)                          ; Increase number of undo
 
  (setq auto-save-default nil)                    ; Disable autosave
  (setq auto-save-timeout 360)                    ; Autosave every minute
 
- (setq make-backup-files t)                      ; Enable backups
- (setq version-control t)                        ; Enable versioning
+ (setq make-backup-files t)                     ; Enable backups
+ (setq version-control nil)                       ; Enable versioning
  (setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
 
  (setq-default indent-tabs-mode nil)             ; Use spaces instead of tabs
- (setq tab-width 2)                              ; Length of tab is N SPC
- (setq indent-line-function 'insert-tab)
- (setq standard-indent 2)                        ; Set Indent Size
- (setq tab-stop-list '(2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80)) ;http://stackoverflow.com/questions/69934/set-4-space-indent-in-emacs-in-text-mode
+ (setq-default tab-width 2)                      ; Length of tab is 2 spacesx
+ (setq-default standard-indent 2)                ; Standard indent is 2 spaces
+ (setq-default js-indent-level 2)                ; JavaScript
 
  (setq truncate-partial-width-windows nil)       ; Don't truncate long lines in horizontally split win
  (setq indicate-empty-lines t)                   ; Show empty lines
@@ -35,11 +34,13 @@
 
  (setq compare-ignore-whitespace t)              ; https://www.gnu.org/software/emacs/manual/html_node/emacs/Comparing-Files.html
  (setq create-lockfiles nil)                     ; https://github.com/boot-clj/boot/wiki/Running-on-Windows
+ 
+ (setq find-file-reuse-dir-buffer t)             ; This makes find-file (C-x C-f) reuse the current buffer when opening files in the same directory.   
 
  (setq cider-show-error-buffer nil)              ; https://stackoverflow.com/questions/59021212/how-can-i-prevent-an-emacs-error-message-window-from-stealing-focus-and-requirin
  (setq cider-auto-select-error-buffer nil)
 
- ;; (setq web-mode-content-types-alist              ; https://stackoverflow.com/questions/57817741/how-to-make-web-mode-read-mjs-files-in-emacs
+ ;; (setq web-mode-content-types-alist           ; https://stackoverflow.com/questions/57817741/how-to-make-web-mode-read-mjs-files-in-emacs
  ;;      '(("jsx" . "\\.[c|m]js[x]?\\'")))
 
  (add-to-list 'auto-mode-alist '("\\.[c|m]js[x]?\\'" . js-mode))
@@ -70,11 +71,11 @@
  
  (menu-bar-mode nil)                             ; No menubar
  (tool-bar-mode 0)                               ; No toolbar
- (icomplete-mode t)                              ; Completion in mini-buffer
+; (icomplete-mode t)                              ; Completion in mini-buffer
  (global-display-line-numbers-mode 1)            ; Show line number on each row
  (line-number-mode 1)                            ; Show line number in mode-line
  (column-number-mode t)                          ; Show column number in mode-line
- (set-scroll-bar-mode 'right)                    ; Scrollbar on the right
+; (set-scroll-bar-mode 'right)                    ; Scrollbar on the right
 ;(flyspell-mode 1)                               ; Auto spell-check
  (delete-selection-mode t)                       ; Delete selection enabled
  (recentf-mode 1)                                ; Recent files menu enabled
@@ -190,20 +191,20 @@
            (error "no process at point!")))))
 
  ;http://stackoverflow.com/questions/12492/pretty-printing-xml-files-on-emacs 
- (defun bf-pretty-print-xml-region (begin end)
-  "Pretty format XML markup in region. You need to have nxml-mode
-http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
-this.  The function inserts linebreaks to separate tags that have
-nothing but whitespace between them.  It then indents the markup
-by using nxml's indentation rules."
-    (interactive "r")
-    (save-excursion
-      (nxml-mode)
-      (goto-char begin)
-      (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
-        (backward-char) (insert "\n"))
-      (indent-region begin end))
-    (message "Ah, much better!"))
+;;  (defun bf-pretty-print-xml-region (begin end)
+;;   "Pretty format XML markup in region. You need to have nxml-mode
+;; http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+;; this.  The function inserts linebreaks to separate tags that have
+;; nothing but whitespace between them.  It then indents the markup
+;; by using nxml's indentation rules."
+;;     (interactive "r")
+;;     (save-excursion
+;;       (nxml-mode)
+;;       (goto-char begin)
+;;       (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+;;         (backward-char) (insert "\n"))
+;;       (indent-region begin end))
+;;     (message "Ah, much better!"))
 
 ; https://stackoverflow.com/questions/1085170/how-to-achieve-code-folding-effects-in-emacs
 (defun set-selective-display-dlw (&optional level)
@@ -228,11 +229,16 @@ F5 again will unset 'selective-display' by setting it to 0."
  (global-set-key (kbd "<f5>") #'(lambda () (interactive)(enlarge-window 5)))
  (global-set-key (kbd "<f6>") 'whitespace-mode)
  (global-set-key (kbd "<f7>") 'toggle-truncate-lines)
- (global-set-key (kbd "<f8>") 'other-window)
- (global-set-key (kbd "<f9>") 'set-selective-display-dlw)
- (global-set-key (kbd "<f10>") 'previous-buffer)
- (global-set-key (kbd "<f11>") 'next-buffer)
+ (global-set-key (kbd "<f8>") 'set-selective-display-dlw)
+;(global-set-key (kbd "<f8>") 'other-window)
+;(global-set-key (kbd "<f10>") 'previous-buffer)
+;(global-set-key (kbd "<f11>") 'next-buffer)
  (global-set-key (kbd "<f12>") 'compare-windows)
+
+ (global-set-key (kbd "C-<tab>") 'other-window)
+ (global-set-key (kbd "C-p") 'previous-buffer)
+ (global-set-key (kbd "C-n") 'next-buffer)
+ (global-set-key (kbd "C-b") 'switch-to-buffer)
  
  (global-set-key "\C-c\C-s" 'create-shell)
  (global-set-key "\C-c\C-h" 'sh-shell)
@@ -274,6 +280,7 @@ F5 again will unset 'selective-display' by setting it to 0."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(misterioso))
  '(package-selected-packages
    '(web-mode godoctor go-mode paredit cider clojure-mode projectile)))
 (custom-set-faces
