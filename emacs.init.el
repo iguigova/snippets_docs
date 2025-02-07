@@ -14,7 +14,7 @@
  (setq auto-save-default nil)                    ; Disable autosave
  (setq auto-save-timeout 360)                    ; Autosave every minute
 
- (setq make-backup-files t)                     ; Enable backups
+ (setq make-backup-files t)                      ; Enable backups
  (setq version-control nil)                       ; Enable versioning
  (setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
 
@@ -22,6 +22,13 @@
  (setq-default tab-width 2)                      ; Length of tab is 2 spacesx
  (setq-default standard-indent 2)                ; Standard indent is 2 spaces
  (setq-default js-indent-level 2)                ; JavaScript
+
+;; Set indentation for Go mode to 4 spacesz
+ (add-hook 'go-mode-hook
+          (lambda ()
+            (setq tab-width 4)
+            (setq standard-indent 4)
+            (setq gofmt-tabs t)))  ; Make sure gofmt uses spaces
 
  (setq truncate-partial-width-windows nil)       ; Don't truncate long lines in horizontally split win
  (setq indicate-empty-lines t)                   ; Show empty lines
@@ -190,7 +197,7 @@
           (t
            (error "no process at point!")))))
 
- ;http://stackoverflow.com/questions/12492/pretty-printing-xml-files-on-emacs 
+;http://stackoverflow.com/questions/12492/pretty-printing-xml-files-on-emacs 
 ;;  (defun bf-pretty-print-xml-region (begin end)
 ;;   "Pretty format XML markup in region. You need to have nxml-mode
 ;; http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
@@ -217,6 +224,14 @@ F5 again will unset 'selective-display' by setting it to 0."
       (set-selective-display 0)
     (set-selective-display (or level (1+ (current-column))))))
 
+(defun copy-paste-buffer ()
+  "Kill the entire buffer content, keep it in the kill ring, and reinsert it."
+  (interactive)
+  (let ((content (buffer-string)))  ; Save the current content of the buffer.
+    (kill-region (point-min) (point-max))  ; Kill the entire buffer content.
+    (insert content)))  ; Reinsert the content back into the buffer.
+
+
 ;http://www.gnu.org/software/emacs/windows/Installing-Emacs.html#Installing-Emacs
 ; (server-start)
 
@@ -239,12 +254,15 @@ F5 again will unset 'selective-display' by setting it to 0."
  (global-set-key (kbd "C-p") 'previous-buffer)
  (global-set-key (kbd "C-n") 'next-buffer)
  (global-set-key (kbd "C-b") 'switch-to-buffer)
+ (global-set-key (kbd "C-l") 'goto-line)
+ (global-set-key (kbd "C-d") 'kill-this-buffer)
  
  (global-set-key "\C-c\C-s" 'create-shell)
  (global-set-key "\C-c\C-h" 'sh-shell)
  (global-set-key "\C-c\C-j" 'reshell-current-buffer) 
  (global-set-key "\C-c\C-d" 'insert-date)
  (global-set-key "\C-c\C-t" 'insert-time)
+ (global-set-key (kbd "C-c k") 'copy-paste-buffer)
 
  ;; (define-key process-menu-mode-map (kbd "C-k") 'joaot/delete-process-at-point)
 
@@ -291,3 +309,5 @@ F5 again will unset 'selective-display' by setting it to 0."
  )
 
 (add-hook 'clojure-mode-hook #'enable-paredit-mode)
+
+(add-hook 'before-save-hook 'gofmt-before-save)
