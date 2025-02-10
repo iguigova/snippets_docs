@@ -15,13 +15,14 @@
  (setq auto-save-timeout 360)                    ; Autosave every minute
 
  (setq make-backup-files t)                      ; Enable backups
- (setq version-control nil)                       ; Enable versioning
+ (setq version-control nil)                      ; Enable versioning
  (setq backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
 
- (setq-default indent-tabs-mode nil)             ; Use spaces instead of tabs
+ (setq-default indent-tabs-mode t)               ; Use spaces instead of tabs
  (setq-default tab-width 2)                      ; Length of tab is 2 spacesx
  (setq-default standard-indent 2)                ; Standard indent is 2 spaces
  (setq-default js-indent-level 2)                ; JavaScript
+ (setq tab-always-indent nil)
 
 ;; Set indentation for Go mode to 4 spacesz
  (add-hook 'go-mode-hook
@@ -225,12 +226,23 @@ F5 again will unset 'selective-display' by setting it to 0."
     (set-selective-display (or level (1+ (current-column))))))
 
 (defun copy-paste-buffer ()
-  "Kill the entire buffer content, keep it in the kill ring, and reinsert it."
+  "Kill the entire buffer content, keep it in the kill ring, and reinsert it,
+preserving the original cursor position."
   (interactive)
-  (let ((content (buffer-string)))  ; Save the current content of the buffer.
-    (kill-region (point-min) (point-max))  ; Kill the entire buffer content.
-    (insert content)))  ; Reinsert the content back into the buffer.
+  (let ((orig-point (point))         ; Save the current cursor position
+        (content (buffer-string)))    ; Save the current content of the buffer
+    (kill-region (point-min) (point-max))    ; Kill the entire buffer content
+    (insert content)                         ; Reinsert the content
+    (goto-char orig-point)))                 ; Restore cursor position
 
+(defun swap-buffer-windows ()
+  "Swap the buffers between the two current windows."
+  (interactive)
+  (let ((buffer1 (window-buffer (selected-window)))
+        (window2 (next-window))
+        (buffer2 (window-buffer (next-window))))
+    (set-window-buffer (selected-window) buffer2)
+    (set-window-buffer window2 buffer1)))
 
 ;http://www.gnu.org/software/emacs/windows/Installing-Emacs.html#Installing-Emacs
 ; (server-start)
@@ -251,18 +263,19 @@ F5 again will unset 'selective-display' by setting it to 0."
  (global-set-key (kbd "<f12>") 'compare-windows)
 
  (global-set-key (kbd "C-<tab>") 'other-window)
+ (global-set-key (kbd "<backtab>") 'swap-buffer-windows)
  (global-set-key (kbd "C-p") 'previous-buffer)
  (global-set-key (kbd "C-n") 'next-buffer)
  (global-set-key (kbd "C-b") 'switch-to-buffer)
  (global-set-key (kbd "C-l") 'goto-line)
- (global-set-key (kbd "C-d") 'kill-this-buffer)
- 
+ (global-set-key (kbd "C-z") 'copy-paste-buffer)
+
  (global-set-key "\C-c\C-s" 'create-shell)
  (global-set-key "\C-c\C-h" 'sh-shell)
- (global-set-key "\C-c\C-j" 'reshell-current-buffer) 
+ (global-set-key "\C-c\C-j" 'reshell-current-buffer)
+
  (global-set-key "\C-c\C-d" 'insert-date)
  (global-set-key "\C-c\C-t" 'insert-time)
- (global-set-key (kbd "C-c k") 'copy-paste-buffer)
 
  ;; (define-key process-menu-mode-map (kbd "C-k") 'joaot/delete-process-at-point)
 
@@ -311,3 +324,4 @@ F5 again will unset 'selective-display' by setting it to 0."
 (add-hook 'clojure-mode-hook #'enable-paredit-mode)
 
 (add-hook 'before-save-hook 'gofmt-before-save)
+
