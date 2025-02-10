@@ -148,23 +148,47 @@
 	             (local-set-key "\C-c\C-f" 'browse-url-of-dired-file)))
 (setq browse-url-save-file t)
   
-;http://stackoverflow.com/questions/6532998/how-to-run-multiple-shells-on-emacs
- (defun create-shell ()
+(defun create-shell ()
     "Creates a shell with a given name"
     (interactive);; "Prompt\n shell name:")
     (let ((shell-name (read-string "shell name: " nil)))
 
-       (shell (concat "*" shell-name "*"))))
+      (shell (concat "*" shell-name "*"))))
 
-;http://stackoverflow.com/questions/235254/how-can-i-run-cygwin-bash-shell-from-within-emacs
-;http://stackoverflow.com/questions/16676750/windows-emacs-git-bash-and-shell-command
- (defun sh-shell ()
-  "Run git sh in shell mode."
+(defun create-shell-with-compilation ()
+  "Creates a named shell with compilation mode enabled"
+  (interactive)
+  (let* ((shell-name (read-string "shell name: " nil))
+         (shell-buffer (shell (concat "*" shell-name "*"))))
+    (with-current-buffer shell-buffer
+      (compilation-shell-minor-mode 1))))
+
+(defun sh-shell ()
+  "Run git sh in shell mode. Use bash shell in windows."
   (interactive)
   (let ((explicit-shell-file-name "/bin/bash")
     ;(shell-file-name explicit-shell-file-name)
     (explicit-sh.exe-args '("--login" "-i")))
     (call-interactively 'create-shell)))
+
+(defun sh-shell-with-compilation ()
+  "Run git bash shell with compilation mode enabled"
+  (interactive)
+  (let ((explicit-shell-file-name "/bin/bash")
+        (explicit-sh.exe-args '("--login" "-i")))
+    (let ((shell-buffer (create-shell-with-compilation)))
+      (with-current-buffer shell-buffer
+        (compilation-shell-minor-mode 1)))))
+
+(defun reshell-current-buffer ()
+  "Kills the process in the current buffer and starts a new shell in it"
+  (interactive)
+  (delete-process (get-buffer-process(current-buffer)))
+  ;(shell (current-buffer)))  
+  (let ((explicit-shell-file-name "/bin/bash")
+    ;(shell-file-name explicit-shell-file-name)
+    (explicit-sh.exe-args '("--login" "-i")))
+    (shell (current-buffer))))
 
 ;http://stackoverflow.com/questions/251908/how-can-i-insert-current-date-and-time-into-a-file-using-emacs
  (defun insert-time ()
@@ -177,26 +201,6 @@
   (interactive)                 ; permit invocation in minibuffer
   (insert (format-time-string "%Y-%m-%d")))
 
- (defun reshell-current-buffer ()
-  "Kills the process in the current buffer and starts a new shell in it"
-  (interactive)
-  (delete-process (get-buffer-process(current-buffer)))
-  ;(shell (current-buffer)))  
-  (let ((explicit-shell-file-name "/bin/bash")
-    ;(shell-file-name explicit-shell-file-name)
-    (explicit-sh.exe-args '("--login" "-i")))
-    (shell (current-buffer))))
-
-;; ;http://stackoverflow.com/questions/10627289/emacs-internal-process-killing-any-command
- (defun joaot/delete-process-at-point ()
-  (interactive)
-  (let ((process (get-text-property (point) 'tabulated-list-id)))
-    (cond ((and process
-                (processp process))
-           (delete-process process)
-           (revert-buffer))
-          (t
-           (error "no process at point!")))))
 
 ;http://stackoverflow.com/questions/12492/pretty-printing-xml-files-on-emacs 
 ;;  (defun bf-pretty-print-xml-region (begin end)
@@ -270,14 +274,13 @@ preserving the original cursor position."
  (global-set-key (kbd "C-l") 'goto-line)
  (global-set-key (kbd "C-z") 'copy-paste-buffer)
 
- (global-set-key "\C-c\C-s" 'create-shell)
- (global-set-key "\C-c\C-h" 'sh-shell)
- (global-set-key "\C-c\C-j" 'reshell-current-buffer)
+(global-set-key "\C-c\C-s" 'create-shell)
+(global-set-key (kbd "C-c C-S-s") 'create-shell-with-compilation)
+(global-set-key "\C-c\C-h" 'sh-shell)
+(global-set-key "\C-c\C-j" 'reshell-current-buffer)
 
  (global-set-key "\C-c\C-d" 'insert-date)
  (global-set-key "\C-c\C-t" 'insert-time)
-
- ;; (define-key process-menu-mode-map (kbd "C-k") 'joaot/delete-process-at-point)
 
 ;References
 ; http://homepages.inf.ed.ac.uk/s0243221/emacs/
@@ -325,3 +328,4 @@ preserving the original cursor position."
 
 (add-hook 'before-save-hook 'gofmt-before-save)
 
+;;(add-hook 'shell-mode-hook 'compilation-shell-minor-mode)
