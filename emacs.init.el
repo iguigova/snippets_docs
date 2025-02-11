@@ -4,7 +4,6 @@
 
 ;; Package initialization
 (require 'package)
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
@@ -28,72 +27,93 @@
     (package-install p)))
 
 ;; Basic UI settings
-(setq-default w32-use-full-screen-buffer nil)
-(setq-default inhibit-startup-message t)
-(setq-default frame-title-format "%f (%i) - %b")
-(setq-default initial-frame-alist '((top . 280) (left . 880) (width . 140) (height . 50)))
-(setq-default split-width-threshold 9999)
-(setq-default pop-up-windows nil)
-(setq-default visible-bell t)
-(setq-default suggest-key-bindings nil)
+(setq-default
+ w32-use-full-screen-buffer nil
+ inhibit-startup-message t
+ frame-title-format "%f (%i) - %b"
+ initial-frame-alist '((top . 280) (left . 880) (width . 140) (height . 50))
+ split-width-threshold 9999
+ pop-up-windows nil
+ visible-bell t
+ suggest-key-bindings nil)
 
-;; Editor behavior
-(setq-default default-major-mode 'text-mode)
-(setq-default confirm-kill-emacs 'yes-or-no-p)
-(setq-default undo-limit 1000)
-(setq-default case-fold-search t)
-(setq-default auto-fill-mode 1)
-(setq-default compare-ignore-whitespace t)
-(setq-default create-lockfiles nil)
-(setq-default find-file-reuse-dir-buffer t)
+;; Editor behaviorx
+(setq-default
+ default-major-mode 'text-mode
+ confirm-kill-emacs 'yes-or-no-p
+ undo-limit 1000000 
+ case-fold-search t
+ auto-fill-mode 1
+ compare-ignore-whitespace t
+ create-lockfiles nil
+ find-file-reuse-dir-buffer t
+ sentence-end-double-space nil
+ require-final-newline t)  
 
 ;; Line handling
-(setq-default truncate-partial-width-windows nil)
-(setq-default indicate-empty-lines t)
-(setq-default scroll-step 1)
+(setq-default
+ truncate-partial-width-windows nil
+ indicate-empty-lines t
+ scroll-step 1
+ scroll-conservatively 101   
+ scroll-margin 3) 
 
 ;; File handling and backup
-(setq-default auto-save-default nil)
-(setq-default auto-save-timeout 360)
-(setq-default make-backup-files t)
-(setq-default version-control nil)
-(setq-default backup-directory-alist (quote ((".*" . "~/.emacs_backups/"))))
+(setq-default
+ auto-save-default nil
+ auto-save-timeout 360
+ make-backup-files t
+ version-control t        
+ kept-new-versions 6
+ kept-old-versions 2
+ delete-old-versions t
+ backup-directory-alist '((".*" . "~/.emacs_backups/")))
 
 ;; Search and grep
-(setq-default grep-command "grep -iIrne \"PATTERN\" .")
+(setq-default grep-command "grep -nHIri -e \"pattern\" .")
 
 ;; Indentation
-(setq-default indent-tabs-mode t)
-(setq-default tab-width 2)
-(setq-default standard-indent 2)
-(setq-default js-indent-level 2)
-(setq-default tab-always-indent nil)
+(setq-default
+ indent-tabs-mode t
+ tab-width 2
+ standard-indent 2
+ js-indent-level 2
+ tab-always-indent nil)
 
-;; Mode settings - these use setq because they're global
-(menu-bar-mode nil)
-(tool-bar-mode 0)
-(icomplete-mode t)
-(global-display-line-numbers-mode 1)
-(line-number-mode 1)
-(column-number-mode t)
-(delete-selection-mode t)
-(recentf-mode 1)
-(desktop-save-mode t)
-(visual-line-mode 1)
+;; Mode settings
+(dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))  ; Grouped UI modes
+  (when (fboundp mode) (funcall mode -1)))
+
+(dolist (mode '(icomplete-mode
+                global-display-line-numbers-mode
+                line-number-mode
+                column-number-mode
+                delete-selection-mode
+                recentf-mode
+                desktop-save-mode
+                visual-line-mode
+                save-place-mode))
+  (funcall mode 1))
 
 ;; IDO mode settings
 (ido-mode 1)
-(setq-default ido-enable-flex-matching t)
-(setq-default ido-everywhere t)
+(setq-default
+ ido-enable-flex-matching t
+ ido-everywhere t
+ ido-auto-merge-work-directories-length -1)  ; Disable auto-merge
+ 
+(global-highlight-thing-mode t) ; Automatically highlights the word or symbol under the cursor
 
-;; Font and color settings
+;; Syntax highlighting
 (global-font-lock-mode 1)
-(setq-default font-lock-maximum-decoration t)
+(setq-default font-lock-maximum-decoration 2)
 
 ;; Parenthesis handling
 (show-paren-mode 1)
-(setq-default blink-matching-paren-distance nil)
-(setq-default show-paren-style 'expression)
+(setq-default
+ blink-matching-paren-distance nil
+ show-paren-style 'expression)
+(electric-pair-mode 1)  ; Auto-pair parentheses
 
 ;; Auto-revert and dired settings
 (global-auto-revert-mode 1)
@@ -103,18 +123,20 @@
 ;; Go
 (add-hook 'go-mode-hook
           (lambda ()
-            (setq tab-width 4)
-            (setq standard-indent 4)
-            (setq gofmt-tabs t)))
+            (setq tab-width 4
+                  standard-indent 4
+                  gofmt-tabs t)))
 (add-hook 'before-save-hook 'gofmt-before-save)
 
 ;; Clojure
-(setq-default cider-show-error-buffer nil)
-(setq-default cider-auto-select-error-buffer nil)
+(setq-default
+ cider-show-error-buffer nil
+ cider-auto-select-error-buffer nil)
 (add-hook 'clojure-mode-hook #'enable-paredit-mode)
 
 ;; JavaScript
 (add-to-list 'auto-mode-alist '("\\.[c|m]js[x]?\\'" . js-mode))
+
 
 ;; Custom functions
 (defun create-shell ()
@@ -217,8 +239,8 @@
 (global-set-key (kbd "C-l") 'goto-line)
 (global-set-key (kbd "C-z") 'copy-paste-buffer)
 
-(global-set-key "\C-c\C-s" 'create-shell)
 (global-set-key (kbd "C-c C-S-s") 'create-shell-with-compilation)
+(global-set-key "\C-c\C-s" 'create-shell)
 (global-set-key "\C-c\C-h" 'sh-shell)
 (global-set-key "\C-c\C-j" 'reshell-current-buffer)
 
@@ -227,6 +249,16 @@
 
 ;; Theme
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(misterioso))
  '(package-selected-packages
-   '(web-mode godoctor go-mode paredit cider clojure-mode projectile)))
+	 '(highlight-thing web-mode godoctor go-mode paredit cider clojure-mode projectile)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
