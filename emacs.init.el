@@ -19,11 +19,17 @@
     web-mode
     paredit
     go-mode
-    godoctor)
+    godoctor
+		dired-subtree
+    dired-filter
+		lsp-mode
+		go-mode
+		go-eldoc)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
   (unless (package-installed-p p)
+    (package-refresh-contents)  ; Refresh before installing
     (package-install p)))
 
 ;; Basic UI settings
@@ -31,11 +37,11 @@
  w32-use-full-screen-buffer nil
  inhibit-startup-message t
  frame-title-format "%f (%i) - %b"
- initial-frame-alist '((top . 280) (left . 880) (width . 140) (height . 50))
  split-width-threshold 9999
  pop-up-windows nil
  visible-bell t
  suggest-key-bindings nil)
+(set-face-attribute 'default nil :height 90)  ; 100 = 10pt font
 
 ;; Editor behaviorx
 (setq-default
@@ -97,15 +103,22 @@
 
 ;; IDO mode settings
 (ido-mode 1)
+(ido-everywhere 1)
 (setq-default
  ido-enable-flex-matching t
+ ido-enable-recursive-matches t      ; Enable recursive matching
+ ido-use-filename-at-point 'guess    ; Use filename at point if available
  ido-everywhere t
- ido-auto-merge-work-directories-length -1)  ; Disable auto-merge
- 
-(global-highlight-thing-mode t) ; Automatically highlights the word or symbol under the cursor
+ ido-auto-merge-work-directories-length 2)
+;; For even better IDO experience, add ido-vertical-mode
+(unless (package-installed-p 'ido-vertical-mode)
+  (package-install 'ido-vertical-mode))
+(ido-vertical-mode 1)
 
 ;; Syntax highlighting
-(global-font-lock-mode 1)
+(global-highlight-thing-mode t) ; Automatically highlights the word or symbol under the cursor
+(set-face-attribute 'highlight-thing nil :background "#FFFFCC")  
+(global-font-lock-mode 1) ;; Highlight whenever you can
 (setq-default font-lock-maximum-decoration 2)
 
 ;; Parenthesis handling
@@ -115,18 +128,44 @@
  show-paren-style 'expression)
 (electric-pair-mode 1)  ; Auto-pair parentheses
 
-;; Auto-revert and dired settings
-(global-auto-revert-mode 1)
-(put 'dired-find-alternate-file 'disabled nil)
+(global-auto-revert-mode 1) 
+
+;; Dired
+(put 'dired-find-alternate-file 'disabled nil) ;; use a in Dired mode to open files or directories while replacing the current buffer
+
+(eval-after-load 'dired
+  '(progn
+     (define-key dired-mode-map "\C-c\C-f" #'browse-url-of-dired-file)  ; removed ()
+     (define-key dired-mode-map (kbd "[") #'dired-subtree-toggle)
+     (define-key dired-mode-map (kbd "]") #'dired-subtree-cycle)
+     (define-key dired-mode-map (kbd "\\") #'dired-subtree-up)
+     (define-key dired-mode-map (kbd "=") #'dired-filter-by-name)))
+(add-hook 'dired-mode-hook 'dired-filter-mode)
+
+(add-hook 'dired-mode-hook 'dired-filter-mode)
 
 ;; Language-specific settings
+
 ;; Go
+(require 'lsp-mode)
+(setq lsp-log-io t)
+(setq lsp-gopls-server-path "/home/ig/go/bin/gopls")
+(setq lsp-golangci-lint-server-path "/home/ig/go/bin/golangci-lint-langserver")
 (add-hook 'go-mode-hook
           (lambda ()
+	    (lsp-deferred)
             (setq tab-width 4
                   standard-indent 4
-                  gofmt-tabs t)))
+                  gofmt-tabs t
+		  gofmt-command "goimports")))
+
+(with-eval-after-load 'lsp-mode
+  (define-key lsp-mode-map (kbd "M-.") #'lsp-find-definition)    ; Go to definition
+  (define-key lsp-mode-map (kbd "M-,") #'pop-tag-mark)           ; Go back
+  (define-key lsp-mode-map (kbd "M-?") #'lsp-find-references))   ; Find references
+
 (add-hook 'before-save-hook 'gofmt-before-save)
+(add-hook 'go-mode-hook #'go-eldoc-setup)
 
 ;; Clojure
 (setq-default
@@ -136,7 +175,6 @@
 
 ;; JavaScript
 (add-to-list 'auto-mode-alist '("\\.[c|m]js[x]?\\'" . js-mode))
-
 
 ;; Custom functions
 (defun create-shell ()
@@ -217,11 +255,6 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'qrr 'query-replace-regexp)
 
-;; Dired mode key binding
-(add-hook 'dired-mode-hook
-          (lambda ()
-            (local-set-key "\C-c\C-f" 'browse-url-of-dired-file)))
-
 ;; Key bindings
 (global-set-key (kbd "<f3>") 'cider-selector)
 (global-set-key (kbd "<f4>") 'kill-this-buffer)
@@ -255,7 +288,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(misterioso))
  '(package-selected-packages
-	 '(highlight-thing web-mode godoctor go-mode paredit cider clojure-mode projectile)))
+	 '(lsp-mode dired-filter dired-subtree highlight-thing web-mode godoctor go-mode paredit cider clojure-mode projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
