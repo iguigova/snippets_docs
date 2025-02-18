@@ -20,17 +20,17 @@
     paredit
     go-mode
     godoctor
-		dired-subtree
+    dired-subtree
     dired-filter
-		lsp-mode
-		go-mode
-		go-eldoc)
+    exec-path-from-shell)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
   (unless (package-installed-p p)
     (package-refresh-contents)  ; Refresh before installing
     (package-install p)))
+
+(exec-path-from-shell-initialize)
 
 ;; Basic UI settings
 (setq-default
@@ -43,7 +43,7 @@
  suggest-key-bindings nil)
 (set-face-attribute 'default nil :height 90)  ; 100 = 10pt font
 
-;; Editor behaviorx
+;; Editor behavior
 (setq-default
  default-major-mode 'text-mode
  confirm-kill-emacs 'yes-or-no-p
@@ -77,6 +77,7 @@
 
 ;; Search and grep
 (setq-default grep-command "grep -nHIri -e \"pattern\" .")
+(setq search-default-mode 'case-fold-search) ;; sets C-s to be case insensitive by default, use M-c to flip on/off in a search 
 
 ;; Indentation
 (setq-default
@@ -87,11 +88,12 @@
  tab-always-indent nil)
 
 ;; Mode settings
-(dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))  ; Grouped UI modes
+(dolist (mode '(menu-bar-mode tool-bar-mode)) 
   (when (fboundp mode) (funcall mode -1)))
 
 (dolist (mode '(icomplete-mode
                 global-display-line-numbers-mode
+								scroll-bar-mode
                 line-number-mode
                 column-number-mode
                 delete-selection-mode
@@ -111,9 +113,9 @@
  ido-everywhere t
  ido-auto-merge-work-directories-length 2)
 ;; For even better IDO experience, add ido-vertical-mode
-(unless (package-installed-p 'ido-vertical-mode)
-  (package-install 'ido-vertical-mode))
-(ido-vertical-mode 1)
+;; (unless (package-installed-p 'ido-vertical-mode)
+;;   (package-install 'ido-vertical-mode))
+;; (ido-vertical-mode 1)
 
 ;; Syntax highlighting
 (global-highlight-thing-mode t) ; Automatically highlights the word or symbol under the cursor
@@ -136,36 +138,58 @@
 (eval-after-load 'dired
   '(progn
      (define-key dired-mode-map "\C-c\C-f" #'browse-url-of-dired-file)  ; removed ()
-     (define-key dired-mode-map (kbd "[") #'dired-subtree-toggle)
-     (define-key dired-mode-map (kbd "]") #'dired-subtree-cycle)
-     (define-key dired-mode-map (kbd "\\") #'dired-subtree-up)
-     (define-key dired-mode-map (kbd "=") #'dired-filter-by-name)))
-(add-hook 'dired-mode-hook 'dired-filter-mode)
-
+     (define-key dired-mode-map (kbd "S-<left>") #'dired-subtree-toggle)
+     (define-key dired-mode-map (kbd "S-<down>") #'dired-subtree-cycle)
+     (define-key dired-mode-map (kbd "S-<right>") #'dired-subtree-up)
+		 (define-key dired-mode-map (kbd "S-<up>") 'dired-up-directory)
+		 (define-key dired-mode-map (kbd "<right>") 'dired-find-alternate-file)
+     (define-key dired-mode-map (kbd "?") #'dired-filter-by-name)))
 (add-hook 'dired-mode-hook 'dired-filter-mode)
 
 ;; Language-specific settings
 
 ;; Go
-(require 'lsp-mode)
-(setq lsp-log-io t)
-(setq lsp-gopls-server-path "/home/ig/go/bin/gopls")
-(setq lsp-golangci-lint-server-path "/home/ig/go/bin/golangci-lint-langserver")
 (add-hook 'go-mode-hook
           (lambda ()
-	    (lsp-deferred)
             (setq tab-width 4
                   standard-indent 4
-                  gofmt-tabs t
-		  gofmt-command "goimports")))
+									gofmt-command "goimports"
+                  gofmt-tabs t)))
 
-(with-eval-after-load 'lsp-mode
-  (define-key lsp-mode-map (kbd "M-.") #'lsp-find-definition)    ; Go to definition
-  (define-key lsp-mode-map (kbd "M-,") #'pop-tag-mark)           ; Go back
-  (define-key lsp-mode-map (kbd "M-?") #'lsp-find-references))   ; Find references
+(defun find-go-root ()
+  "Find the nearest directory containing go.mod or .git"
+  (locate-dominating-file
+   default-directory
+   (lambda (dir)
+     (or (file-exists-p (expand-file-name "go.mod" dir))
+         (file-exists-p (expand-file-name ".git" dir))))))
+
+(defun generate-go-tags ()
+  "Generate TAGS file for Go project using ctags.
+If in a project (detected via go.mod or .git), generates in project root.
+Otherwise generates in current directory."
+  (interactive)
+  (let* ((root-dir (or (find-go-root)
+                       default-directory))
+         (default-directory root-dir))
+    (if (executable-find "ctags")
+        (progn
+          (shell-command "ctags -Re --languages=go .")
+          (message "Generated TAGS file in %s" root-dir))
+      (error "ctags not found in PATH. Please install universal-ctags"))))
+
+(defun generate-go-tags-in-dir (dir)
+  "Generate TAGS file for Go project in specified directory."
+  (interactive "DDirectory: ")
+  (let ((default-directory dir))
+    (generate-go-tags)))
 
 (add-hook 'before-save-hook 'gofmt-before-save)
-(add-hook 'go-mode-hook #'go-eldoc-setup)
+(add-hook 'after-save-hook
+          (lambda ()
+            (when (eq major-mode 'go-mode)
+              (generate-go-tags)))
+          nil t)
 
 ;; Clojure
 (setq-default
@@ -266,11 +290,17 @@
 
 (global-set-key (kbd "C-<tab>") 'other-window)
 (global-set-key (kbd "<backtab>") 'swap-buffer-windows)
+(global-set-key (kbd "C-o") 'pop-global-mark)
 (global-set-key (kbd "C-p") 'previous-buffer)
 (global-set-key (kbd "C-n") 'next-buffer)
 (global-set-key (kbd "C-b") 'switch-to-buffer)
 (global-set-key (kbd "C-l") 'goto-line)
 (global-set-key (kbd "C-z") 'copy-paste-buffer)
+
+(global-set-key (kbd "M-.") #'xref-find-definitions)
+(global-set-key (kbd "M-,") #'xref-pop-marker-stack)
+(global-set-key (kbd "M-?") #'xref-find-references)
+(global-set-key (kbd "C-M-.") #'xref-find-apropos)
 
 (global-set-key (kbd "C-c C-S-s") 'create-shell-with-compilation)
 (global-set-key "\C-c\C-s" 'create-shell)
@@ -288,7 +318,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(misterioso))
  '(package-selected-packages
-	 '(lsp-mode dired-filter dired-subtree highlight-thing web-mode godoctor go-mode paredit cider clojure-mode projectile)))
+	 '(dired-filter dired-subtree highlight-thing web-mode godoctor go-mode paredit cider clojure-mode projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
