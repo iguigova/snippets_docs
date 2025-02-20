@@ -2,6 +2,8 @@
 (setq gc-cons-threshold 100000000)
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000)))
 
+(setq default-directory "~/src/flourish/api/external-api/external-api")
+
 ;; Package initialization
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -77,7 +79,8 @@
 
 ;; Search and grep
 (setq-default grep-command "grep -nHIri -e \"pattern\" .")
-(setq search-default-mode 'case-fold-search) ;; sets C-s to be case insensitive by default, use M-c to flip on/off in a search 
+(setq search-default-mode 'case-fold-search) ;; sets C-s to be case insensitive by default, use M-c to flip on/off in a search
+(setq case-fold-search t)
 
 ;; Indentation
 (setq-default
@@ -141,8 +144,9 @@
      (define-key dired-mode-map (kbd "S-<left>") #'dired-subtree-toggle)
      (define-key dired-mode-map (kbd "S-<down>") #'dired-subtree-cycle)
      (define-key dired-mode-map (kbd "S-<right>") #'dired-subtree-up)
-		 (define-key dired-mode-map (kbd "S-<up>") 'dired-up-directory)
+		 (define-key dired-mode-map (kbd "S-<up>") (lambda () (interactive) (find-alternate-file ".."))) ;(define-key dired-mode-map (kbd "S-<up>") 'dired-up-directory)
 		 (define-key dired-mode-map (kbd "<right>") 'dired-find-alternate-file)
+		 (define-key dired-mode-map (kbd "<left>") 'dired-find-file-other-window)
      (define-key dired-mode-map (kbd "?") #'dired-filter-by-name)))
 (add-hook 'dired-mode-hook 'dired-filter-mode)
 
@@ -155,34 +159,6 @@
                   standard-indent 4
 									gofmt-command "goimports"
                   gofmt-tabs t)))
-
-(defun find-go-root ()
-  "Find the nearest directory containing go.mod or .git"
-  (locate-dominating-file
-   default-directory
-   (lambda (dir)
-     (or (file-exists-p (expand-file-name "go.mod" dir))
-         (file-exists-p (expand-file-name ".git" dir))))))
-
-(defun generate-go-tags ()
-  "Generate TAGS file for Go project using ctags.
-If in a project (detected via go.mod or .git), generates in project root.
-Otherwise generates in current directory."
-  (interactive)
-  (let* ((root-dir (or (find-go-root)
-                       default-directory))
-         (default-directory root-dir))
-    (if (executable-find "ctags")
-        (progn
-          (shell-command "ctags -Re --languages=go .")
-          (message "Generated TAGS file in %s" root-dir))
-      (error "ctags not found in PATH. Please install universal-ctags"))))
-
-(defun generate-go-tags-in-dir (dir)
-  "Generate TAGS file for Go project in specified directory."
-  (interactive "DDirectory: ")
-  (let ((default-directory dir))
-    (generate-go-tags)))
 
 (add-hook 'before-save-hook 'gofmt-before-save)
 (add-hook 'after-save-hook
@@ -290,25 +266,27 @@ Otherwise generates in current directory."
 
 (global-set-key (kbd "C-<tab>") 'other-window)
 (global-set-key (kbd "<backtab>") 'swap-buffer-windows)
-(global-set-key (kbd "C-o") 'pop-global-mark)
+(global-set-key (kbd "C-\\") (lambda () (interactive) (set-mark-command 4)))  ; C-u C-SPC equivalent: pop-local-mark
+(global-set-key (kbd "C-|") 'pop-global-mark)
 (global-set-key (kbd "C-p") 'previous-buffer)
 (global-set-key (kbd "C-n") 'next-buffer)
 (global-set-key (kbd "C-b") 'switch-to-buffer)
 (global-set-key (kbd "C-l") 'goto-line)
 (global-set-key (kbd "C-z") 'copy-paste-buffer)
 
-(global-set-key (kbd "M-.") #'xref-find-definitions)
-(global-set-key (kbd "M-,") #'xref-pop-marker-stack)
-(global-set-key (kbd "M-?") #'xref-find-references)
-(global-set-key (kbd "C-M-.") #'xref-find-apropos)
+(setq tags-table-list '("~/src/flourish/api/TAGS"))
+(global-set-key (kbd "C-c <up>") #'xref-find-references)
+(global-set-key (kbd "C-c <left>") #'xref-pop-marker-stack)
+(global-set-key (kbd "C-c <right>") #'xref-find-definitions)
+(global-set-key (kbd "C-c <down>") #'xref-find-apropos)
 
-(global-set-key (kbd "C-c C-S-s") 'create-shell-with-compilation)
-(global-set-key "\C-c\C-s" 'create-shell)
-(global-set-key "\C-c\C-h" 'sh-shell)
-(global-set-key "\C-c\C-j" 'reshell-current-buffer)
+(global-set-key (kbd "C-c S-s") 'create-shell-with-compilation)
+(global-set-key "\C-cs" 'create-shell)
+(global-set-key "\C-ch" 'sh-shell)
+(global-set-key "\C-cj" 'reshell-current-buffer)
 
-(global-set-key "\C-c\C-d" 'insert-date)
-(global-set-key "\C-c\C-t" 'insert-time)
+(global-set-key "\C-cd" 'insert-date)
+(global-set-key "\C-ct" 'insert-time)
 
 ;; Theme
 (custom-set-variables
