@@ -141,10 +141,9 @@
 (eval-after-load 'dired
   '(progn
      (define-key dired-mode-map "\C-c\C-f" #'browse-url-of-dired-file)  ; removed ()
-     (define-key dired-mode-map (kbd "S-<left>") #'dired-subtree-toggle)
-     (define-key dired-mode-map (kbd "S-<down>") #'dired-subtree-cycle)
-     (define-key dired-mode-map (kbd "S-<right>") #'dired-subtree-up)
-		 (define-key dired-mode-map (kbd "S-<up>") (lambda () (interactive) (find-alternate-file ".."))) ;(define-key dired-mode-map (kbd "S-<up>") 'dired-up-directory)
+     (define-key dired-mode-map (kbd "S-<right>") #'dired-subtree-toggle)
+     (define-key dired-mode-map (kbd "S-<up>") #'dired-subtree-up)
+		 (define-key dired-mode-map (kbd "C-S-<up>") (lambda () (interactive) (find-alternate-file ".."))) ;(define-key dired-mode-map (kbd "S-<up>") 'dired-up-directory)
 		 (define-key dired-mode-map (kbd "<right>") 'dired-find-alternate-file)
 		 (define-key dired-mode-map (kbd "<left>") 'dired-find-file-other-window)
      (define-key dired-mode-map (kbd "?") #'dired-filter-by-name)))
