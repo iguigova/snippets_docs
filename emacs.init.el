@@ -24,7 +24,8 @@
     godoctor
     dired-subtree
     dired-filter
-    exec-path-from-shell)
+    exec-path-from-shell
+		prettier-js)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -156,15 +157,9 @@
           (lambda ()
             (setq tab-width 4
                   standard-indent 4
-									gofmt-command "goimports"
-                  gofmt-tabs t)))
-
-(add-hook 'before-save-hook 'gofmt-before-save)
-(add-hook 'after-save-hook
-          (lambda ()
-            (when (eq major-mode 'go-mode)
-              (generate-go-tags)))
-          nil t)
+                  gofmt-command "goimports"
+                  gofmt-tabs t)
+            (add-hook 'before-save-hook 'gofmt-before-save nil t)))
 
 ;; Clojure
 (setq-default
@@ -174,6 +169,27 @@
 
 ;; JavaScript
 (add-to-list 'auto-mode-alist '("\\.[c|m]js[x]?\\'" . js-mode))
+
+(add-hook 'js-mode-hook
+          (lambda ()
+            (prettier-js-mode t)
+            (add-hook 'before-save-hook 'prettier-js nil t)))
+
+(add-hook 'web-mode-hook
+          (lambda ()
+            (prettier-js-mode t)
+            (add-hook 'before-save-hook 'prettier-js nil t)))
+
+;; Optional: Configure prettier options
+(setq prettier-js-args '(
+  "--trailing-comma" "es5"
+  "--single-quote" "true"
+  "--print-width" "100"
+  "--tab-width" "2"
+  "--use-tabs" "false"
+  "--jsx-bracket-same-line" "false"
+  "--prose-wrap" "preserve"
+	))
 
 ;; Custom functions
 (defun create-shell ()
@@ -295,7 +311,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(misterioso))
  '(package-selected-packages
-	 '(dired-filter dired-subtree highlight-thing web-mode godoctor go-mode paredit cider clojure-mode projectile)))
+	 '(prettier-js dired-filter dired-subtree highlight-thing web-mode godoctor go-mode paredit cider clojure-mode projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
