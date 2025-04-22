@@ -79,7 +79,7 @@
  backup-directory-alist '((".*" . "~/.emacs_backups/")))
 
 ;; Search and grep
-(setq-default grep-command "grep -nHIri -e \"pattern\" .")
+(setq-default grep-command "grep -nHIri --exclude-dir=folder_name \"pattern\" .")
 (setq search-default-mode 'case-fold-search) ;; sets C-s to be case insensitive by default, use M-c to flip on/off in a search
 (setq case-fold-search t)
 
@@ -109,13 +109,12 @@
 
 ;; IDO mode settings
 (ido-mode 1)
-(ido-everywhere 1)
 (setq-default
  ido-enable-flex-matching t
  ido-enable-recursive-matches t      ; Enable recursive matching
  ido-use-filename-at-point 'guess    ; Use filename at point if available
  ido-everywhere t
- ido-auto-merge-work-directories-length 2)
+ ido-auto-merge-work-directories-length 7)
 ;; For even better IDO experience, add ido-vertical-mode
 ;; (unless (package-installed-p 'ido-vertical-mode)
 ;;   (package-install 'ido-vertical-mode))
@@ -182,14 +181,14 @@
 
 ;; Optional: Configure prettier options
 (setq prettier-js-args '(
-  "--trailing-comma" "es5"
+  "--trailing-comma" "es5"  ;; or "es5" or "all"
   "--single-quote" "true"
-  "--print-width" "100"
+  "--print-width" "120"
   "--tab-width" "2"
   "--use-tabs" "false"
-  "--jsx-bracket-same-line" "false"
+  "--jsx-bracket-same-line" "true"
   "--prose-wrap" "preserve"
-	))
+))
 
 ;; Custom functions
 (defun create-shell ()
@@ -265,6 +264,12 @@
     (set-window-buffer (selected-window) buffer2)
     (set-window-buffer window2 buffer1)))
 
+(defun multi-occur-all (search-term)
+  "Search for SEARCH-TERM across all open buffers."
+  (interactive "sSearch term: ")
+  (multi-occur-in-matching-buffers "." search-term))
+
+
 ;; Aliases
 (defalias 'rof 'recentf-open-files)
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -283,11 +288,15 @@
 (global-set-key (kbd "<backtab>") 'swap-buffer-windows)
 (global-set-key (kbd "C-\\") (lambda () (interactive) (set-mark-command 4)))  ; C-u C-SPC equivalent: pop-local-mark
 (global-set-key (kbd "C-|") 'pop-global-mark)
+(global-set-key (kbd "C-]") 'kill-this-buffer)
 (global-set-key (kbd "C-p") 'previous-buffer)
 (global-set-key (kbd "C-n") 'next-buffer)
 (global-set-key (kbd "C-b") 'switch-to-buffer)
 (global-set-key (kbd "C-l") 'goto-line)
 (global-set-key (kbd "C-z") 'copy-paste-buffer)
+(global-set-key (kbd "C-f") 'multi-occur-all)
+
+(global-set-key (kbd "M-/") 'switch-to-buffer)
 
 (setq tags-table-list '("~/src/flourish/api/TAGS"))
 (global-set-key (kbd "C-c <up>") #'xref-find-references)
