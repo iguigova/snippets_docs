@@ -61,6 +61,18 @@ alias.feature !f() { git checkout -b $1 && git push --set-upstream origin $1; };
 alias.rm ! f() { find . -type f -name $1 -delete; }; f
 -----------------------------------------------------------------
 
+on ubuntu
+alias.alias config --get-regexp ^alias\.
+alias.s status
+alias.psh ! git push origin && git lg -10 && git s
+alias.lg log --no-merges --pretty=format:'%Cgreen%h%Creset %ci%x08%x08%x08%x08%x08%x08%x08%x08%x08% (%cr%x08%x08%x08%x08) %C(yellow)%cn%Creset %s'
+alias.pll ! git pull origin && git lg -10 && git s
+alias.feature ! f() { git checkout -b $1 && git push --set-upstream origin $1; }; f
+alias.rma ! f() { git config --global --unset "alias."; }; f
+alias.index ! git add . && git diffs
+alias.snapshot ! f() { git stash push -m "$(date): $1" && git stash apply "stash@{0}"; }; f
+alias.diffs diff --staged -w
+
 https://stackoverflow.com/questions/1519006/how-do-i-create-a-remote-git-branch
 git config --global push.default current
 
